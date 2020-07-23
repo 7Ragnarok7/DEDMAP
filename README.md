@@ -1,8 +1,18 @@
-<<<<<<< HEAD
-# PortMapper
+# *PortMapper*
+[![Python-ico](https://github.com/7Ragnarok7/PortMapper/blob/master/image-src/python-logo.png?raw=true)][py]  
 
-##### Port Mapper is a cross-platform 
-=======
-Workflow and Usage Documentation.
-All desciption of the tool and the usage guide will be provided here.
->>>>>>> 3e184ba0000add64585eb341d492ca0625c9cca0
+##### Port Mapper is a simple cross-platform [Port Scanning][ps] tool made with ease to use and convinience in mind.  
+
+### Requirements :-  
+ - [Python 3][py]
+ - 
+ 
+### Installation :-
+ 
+```sh
+$ git clone https://github.com/7Ragnarok7/PortMapper.git
+$ apt-get install python3
+
+
+```
+
