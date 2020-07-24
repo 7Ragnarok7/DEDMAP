@@ -1,0 +1,57 @@
+#!/bin/python
+
+#LIBRARIES
+from socket import socket
+from socket import gethostbyname
+from time import time
+from funcy import flatten
+import subprocess
+import sys
+import getopt
+
+#A FUNCTION TO CONVERT IP-RANGE TO A LIST OF IP'S
+def convert(target, index):
+	new_targets = []
+	seperated = target.split("-")
+	octets = seperated[0].split(".")
+	new = [i for i in range(int(octets[3]), int(seperated[1]) + 1)]
+	for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
+	targets[index] = new_targets
+	
+#SCANNER FUNCTION
+def scanner(t, p):
+	pass
+
+#VARIABLES
+try: options, targets = getopt.getopt(sys.argv[1:], 'sp:', ['sweep', 'port='])
+except getopt.GetoptError: sys.exit("Something went wrong!")
+
+options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
+
+for index in range(len(targets)):
+	if "-" in targets[index]: convert(targets[index], index)
+
+targets=list(flatten(targets))
+
+if "-s" in options and "--sweep" in options: del (options["-s"])
+elif "-s" in options: options["--sweep"] = options.pop("-s")
+
+if "-p" in options and "--port" in options: del (options["-p"])
+elif "-p" in options: options["--port"] = options.pop("-p")
+
+	
+#CONSTANTS
+STARTING_TIME = time()
+TARGET_LEN = len(targets)
+OPTION_LEN = len(options)
+TARGET_IP = list(map(gethostbyname, targets))
+
+#DEBUGGING
+#print(targets)
+#print(options)
+#print(TARGET_IP)
+#print(TARGET_LEN)
+#print(OPTION_LEN)
+
+#MAIN
+subprocess.call('pyfiglet -c RED dedmap -f Bloody', shell=True)
