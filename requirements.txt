@@ -348,7 +348,7 @@ vboxapi==1.0
 venusian==3.0.0
 vinetto==0.8.0
 wafw00f==2.1.0
-waitress==1.4.1
+waitress==1.4.3
 wapiti3==3.0.3
 wcwidth==0.1.9
 webargs==6.1.0
