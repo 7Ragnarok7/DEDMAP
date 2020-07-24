@@ -1,6 +1,6 @@
 [![DEDMAP-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/Screenshot%20from%202020-07-24%2021-45-44.png?raw=true)](https://7ragnarok7.github.io/DEDMAP)
 # *DEDMAP*
-[![Python-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/python-logo.png?raw=true =16x16)][py]  
+[![Python-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/python-logo.png?raw=true]{:height="16px" width="16px"}[py]  
 
 ##### DEDMAP is a ***Simple*** but ***Powerfull*** Cross-Platform TCP and UDP [Port Scanning][ps] tool made with ease to use and convinience in mind. 
 
