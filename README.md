@@ -3,7 +3,7 @@
 
 ##### Port Mapper is a simple cross-platform TCP [Port Scanning][ps] tool made with ease to use and convinience in mind. 
 
-Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divided into the following three ranges:
+Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divided into the following three ranges:-
 - System or well-known ports: from 0 to 1023
 - User or registered ports: from 1024 to 49151
 - Dynamic or private ports: all > 49151 
