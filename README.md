@@ -1,7 +1,7 @@
 # *DEDMAP*
 [![Python-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/python-logo.png?raw=true)][py]  
 
-##### Port Mapper is a simple cross-platform [Port Scanning][ps] tool made with ease to use and convinience in mind.  
+##### DEDMAP is a ***Simple*** but ***Powerfull*** Cross-Platform TCP and UDP [Port Scanning][ps] tool made with ease to use and convinience in mind. 
 
 Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divided into the following three ranges:-
 - System or well-known ports: from 0 to 1023
