@@ -1,4 +1,4 @@
-[![DEDMAP-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/Screenshot%20from%202020-07-24%2021-45-44.png?raw=true)][https://7ragnarok7.github.io/DEDMAP]
+[![DEDMAP-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/Screenshot%20from%202020-07-24%2021-45-44.png?raw=true)](https://7ragnarok7.github.io/DEDMAP)
 # *DEDMAP*
 [![Python-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/python-logo.png?raw=true)][py]  
 
