@@ -54,4 +54,4 @@ TARGET_IP = list(map(gethostbyname, targets))
 #print(OPTION_LEN)
 
 #MAIN
-subprocess.call('pyfiglet -c RED dedmap -f Bloody', shell=True)
+subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell=True)
