@@ -1,18 +1,19 @@
 #!/bin/python
 
-#LIBRARIES
-from socket import socket
-from socket import gethostbyname
+#IMPORTING LIBRARIES
+import socket
 from time import time
 from funcy import flatten
 import subprocess
 import sys
 import getopt
 
+#GRAPHICS/TEXT ART
+subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell=True)
+
 #A FUNCTION TO CONVERT IP-RANGE TO A LIST OF IP'S
-def convert(target, index):
+def convert(seperated, index):
 	new_targets = []
-	seperated = target.split("-")
 	octets = seperated[0].split(".")
 	new = [i for i in range(int(octets[3]), int(seperated[1]) + 1)]
 	for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
@@ -22,17 +23,23 @@ def convert(target, index):
 def scanner(t, p):
 	pass
 
-#VARIABLES
+#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
 try: options, targets = getopt.getopt(sys.argv[1:], 'sp:', ['sweep', 'port='])
-except getopt.GetoptError: sys.exit("Something went wrong!")
+except getopt.GetoptError: sys.exit("option -p requires argument")
+
+#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT
+try: 
+	for item in targets:
+		if "-" in item:
+			new = item.split("-")
+			if "".join(new[0].split(".")).isdigit(): convert(new, targets.index(item))
+except IndexError: sys.exit("IP-RANGE only supported in last octet .i.e 1.1.1.1-100")
+
+targets = list(flatten(targets)) #CONVERTING NESTED LISTS TO NORMAL LISTS RETURNED FROM CONVERT() TO NORMAL LISTS
 
 options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
 
-for index in range(len(targets)):
-	if "-" in targets[index]: convert(targets[index], index)
-
-targets=list(flatten(targets))
-
+#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
 if "-s" in options and "--sweep" in options: del (options["-s"])
 elif "-s" in options: options["--sweep"] = options.pop("-s")
 
@@ -44,14 +51,21 @@ elif "-p" in options: options["--port"] = options.pop("-p")
 STARTING_TIME = time()
 TARGET_LEN = len(targets)
 OPTION_LEN = len(options)
-TARGET_IP = list(map(gethostbyname, targets))
-
+try: TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
+except socket.gaierror: sys.exit("Unable to resolve hostname")
 #DEBUGGING
-#print(targets)
-#print(options)
-#print(TARGET_IP)
-#print(TARGET_LEN)
-#print(OPTION_LEN)
+print(targets)
+print(options)
+print(TARGET_IP)
+print(TARGET_LEN)
+print(OPTION_LEN)
+
+#BUGS/COMPABILITY ISSUES
+#MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
+#SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.1-200
+
+
 
 #MAIN
-subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell=True)
+if not targets: sys.exit("No targets specified! Use dedmap -h or --help to get usage instructions.")
+
