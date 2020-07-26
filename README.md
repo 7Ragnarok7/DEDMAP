@@ -25,7 +25,7 @@ $ chmod +x install
 $ ./install
 ```
 All the requirements will be installed automatically.
-Just execute the "install.sh" file ;)
+Just execute the "install" file ;)
 
 ### Uninstallation :-
  
