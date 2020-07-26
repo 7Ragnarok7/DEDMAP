@@ -13,24 +13,26 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 ### Requirements :-  
  - [Python 3][py]
+ - [Pip][pp]
  - *A bit of love and care* :)
  
 ### Installation :-
  
 ```sh
 $ git clone https://github.com/7Ragnarok7/DEDMAP.git
-$ apt-get install python3 python3-pip
 $ cd DEDMAP
-$ chmod +x install.sh
-$ ./install.sh
+$ chmod +x install
+$ ./install
 ```
+All the requirements will be installed automatically.
+Just execute the "install.sh" file ;)
 
 ### Uninstallation :-
  
 ```sh
 $ cd DEDMAP
-$ chmod +x uninstall.sh
-$ ./uninstall.sh
+$ chmod +x uninstall
+$ ./uninstall
 ```
 
 
@@ -41,6 +43,7 @@ $ ./uninstall.sh
 
 [ps]:<https://www.techopedia.com/definition/4059/port-scanning>
 [py]:<https://www.python.org>
+[pp]:<https://pip.pypa.io/en/stable/installing>
 [page]:<https://7ragnarok7.github.io/DEDMAP>
 
 
