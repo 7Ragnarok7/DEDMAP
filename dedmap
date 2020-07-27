@@ -7,22 +7,37 @@ from datetime import datetime
 from time import time
 from funcy import flatten
 from numpy import array
+from colorama import init, Fore
 import subprocess
 import sys
 import getopt
 import logging as log
 
 try:
+	#SETTING UP A COLOR SCHEME FOR BETTER VISUALISATION
+	init()
+	BLUE = Fore.BLUE
+	RED = Fore.RED
+	GREEN = Fore.GREEN
+	RESET = Fore.RESET
+	GRAY = Fore.LIGHTBLACK_EX
+	
 	#SETTING UP A LOGGING SYSTEM
 	log.basicConfig(level = log.INFO, format = '  %(message)s', handlers = [log.FileHandler('temp.log'), log.StreamHandler()])
 	
 	#GRAPHICS/TEXT ART
 	subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell = True)
 
-	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
-	STARTING_TIME = time()
-	log.info("\nStarting DEDMAP at {} ( https://7ragnarok7.github.io/DEDMAP ) .....".format(datetime.now().strftime('"%B %d, %Y" %H:%M:%S')))
+	#INITIAL MESSAGE
+	log.info("\n{}Starting DEDMAP at {} ( https://7ragnarok7.github.io/DEDMAP ) .....{}".format(BLUE, datetime.now().strftime('"%B %d, %Y" %H:%M:%S'), RESET))
 	with open("temp.log", "a") as file: file.write("\nCommand used: {}\n".format(" ".join(sys.argv)))
+	
+	#FUNCTION TO WRITE OUTPUT TO A FILE
+	def write():
+		if "--write" in options: 
+			print("\nWriting the output to {},\n".format(options["--write"]))
+			subprocess.call("cat temp.log >> {} && rm temp.log".format(options["--write"]), shell = True)
+		else: subprocess.call("rm temp.log", shell = True)
 
 	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
 	def help(): print("""
@@ -30,12 +45,15 @@ DEDMAP ( https://7ragnarok7.github.io/DEDMAP )
 
 Usage: dedmap [--option(s)] [target(s)]
 
+By default a tcp scan will be performed if no options are provided.
 By default the well-known top 1024 ports will be scanned if no ports are specified.
+Long Options (--<options>) have more priority.
 
 Options:
 -h, --help              show this help message and exit
 -v, --verbose           run in verbose mode
 -d, --dns               performs a dns lookup
+-r, --rdns				performs a reverse dns lookup
 -p, --port<port(s)>     only scan specified port(s)
                         Ex: -p 21; -p 21,22,23;
                         -p user; (scan user ports from 1024 to 49151)
@@ -45,11 +63,13 @@ Options:
 -u, --udp               perform a udp scan
 -s, --sweep             perform a sweep scan
 -m, --mode<wan/lan>     select the mode for sweep scan (default = wan)
-                        select lan mode for better scanning speeds in lan network
+                        Select lan mode(turbo mode) for better scanning speeds (upto 10x)
+                        It is recommended to use the turbo mode only on a lan network
+                        as it might result loss of accuracy in wan networks
                         Ex: -sm lan; -sm wan;
 -o, --os                perform a os detection
--r, --report<filename>  saves the results in a file
-                        Ex: -r report.txt
+-w, --write<filename>   writes the results in a file
+                        Ex: -w report.txt
 
 Examples:               dedmap 1.1.1.1
                         dedmap localhost
@@ -57,12 +77,14 @@ Examples:               dedmap 1.1.1.1
                         dedmap google.com
                         dedmap google.com yahoo.com
                         dedmap 1.1.1.1 2.2.2.2 3.3.3.3
-                        dedmap 1.1.1.1-100 google.com
+                        dedmap 1.1.1.1-100 google.com (Perform a tcp scan on all the hosts without pinging to bypass firewall icmp block)
                         dedmap -p 20 1.1.1.1
                         dedmap -p 20,21,22 1.1.1.1
-                        dedmap -s 1.1.1.0-255
+                        dedmap -sm lan -p 21 192.168.1.1-255 (Perform a tcp port scan in lan mode on all the live hosts)
+                        dedmap -s 1.1.1.1-255
+                        dedmap -sr 1.1.1.1-255 (Perform a dns lookup on all the live targets in the network)
                         dedmap -st 1.1.1.0-255 (To scan only the hosts which are alive in the network)
-                        dedmap -r report.txt 127.0.0.1
+                        dedmap -w report.txt 127.0.0.1
 """)
 
 
@@ -91,20 +113,57 @@ Examples:               dedmap 1.1.1.1
 		for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
 		targets[index] = new_targets
 	
-	#SWEEP-SCAN FUNCTION
-	def sweep():
-		log.info("\nPerforming a sweep scan.....\n")
-		for ip in TARGET_IP:
-			if "--verbose" in options: print("Scanning {} .....".format(ip))
-			if "--mode" not in options or options["--mode"] == "wan": response = os.popen("ping -b -c 1 -w 1 {}".format(ip))
-			else: response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip))
-			if "ttl" in response.readlines()[1].lower():
-				log.info("{} --> Live".format(ip))
-				live_targets.append(ip) #STORING ALL THE LIVE TARGETS
-		log.info("\n{} hosts alive.\n".format(len(live_targets)))
+	#TCP / UDP SCANNER
+	#def tcp_udp(mode, start, end):
+	#	log.info("\nPerforming a {} scan.....\n".format(mode))
+	#	if "--sweep" in options:
+	#		for ip in live_targets:
+	#			if len(ports):
+	#				for p in ports:
+						
+				
+				
+	
+	#MAIN SCANNING FUNCTION ********
+	def scan():
+		#DNS LOOKUP
+		if "--dns" in options: log.info("\nPerforming a DNS lookup.....\n\n{}\n".format(array(list(zip(targets, TARGET_IP)))))
+		
+		#SWEEP SCAN
+		if "--sweep" in options:
+			log.info("\nPerforming a sweep scan.....\n")
+			for ip in TARGET_IP:
+				if "--verbose" in options: print("Scanning {} .....".format(ip))
+				if "--mode" not in options or options["--mode"] == "wan": response = os.popen("ping -b -c 1 -w 1 {}".format(ip))
+				else: response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip))
+				if "ttl" in response.readlines()[1].lower():
+					log.info("{} --> Live".format(ip))
+					live_targets.append(ip) #STORING ALL THE LIVE TARGETS
+			log.info("\n{} hosts alive out of {}\n".format(len(live_targets), TARGET_LEN))
+		
+		#REVERSE-DNS LOOKUP
+		if "--rdns" in options:
+			log.info("\nPerforming a REVERSE-DNS lookup.....\n")
+			if "--sweep" in options: hostnames = list(map(socket.getfqdn, live_targets))
+			else: hostnames = list(map(socket.getfqdn, TARGET_IP))
+			log.info(array(list(zip(hostnames, live_targets))))
+			
+		#TCP/UDP SCAN
+	#	if "--tcp" in options or OPTION_LEN == 0:
+	#		if "--port" not in options: tcp_udp("tcp", 0, 1024)
+	#		elif options["--port"] == "user": tcp_udp("tcp", 1024, 49152)
+	#		elif options["--port"] == "private": tcp_udp("tcp", 49152, 65536)
+	#		elif options["--port"] == "all": tcp_udp("tcp", 0, 65536)
+			
+	#	if "--udp" in options: tcp_udp("udp")
+	#		if "--port" not in options: tcp_udp("udp", 0, 1024)
+	#		elif options["--port"] == "user": tcp_udp("udp", 1024, 49152)
+	#		elif options["--port"] == "private": tcp_udp("udp", 49152, 65536)
+	#		elif options["--port"] == "all": tcp_udp("udp", 0, 65536)
+	#		else: print("Invalid port option specified!")
 		
 	#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
-	options, targets = getopt.getopt(sys.argv[1:], 'sdotuhvp:r:m:', ['sweep', 'dns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'report=', 'mode='])
+	options, targets = getopt.getopt(sys.argv[1:], 'sdrotuhvp:w:m:', ['sweep', 'dns', 'rdns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'write=', 'mode='])
 	
 	#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT 
 	for item in targets:
@@ -115,19 +174,27 @@ Examples:               dedmap 1.1.1.1
 	#VARIABLES
 	targets = list(flatten(targets)) #CONVERTING NESTED LISTS RETURNED FROM CONVERT() TO NORMAL LISTS
 	options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
+	ports = []
 	live_targets = []
 	open_ports = []
+	
 
 	#CONSTANTS
-	POSSIBLE_OPTIONS = {"-s":"--sweep", "-m":"--mode", "-d":"--dns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-r":"--report"}
+	POSSIBLE_OPTIONS = {"-s":"--sweep", "-m":"--mode", "-d":"--dns", "-r":"--rdns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-w":"--write"}
 	TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
 	TARGET_LEN = len(TARGET_IP)
 	OPTION_LEN = len(options)
 	
 	#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
 	priority()
+	
+	#GETTING SPECIFIC PORTS
+	if "--port" in options: 
+		if "," in options["--port"] : ports = options["--port"].split(",")
+		elif options["--port"].isdigit(): ports.append(options["--port"])
+	ports = [int(i) for i in ports]
 
-	################### MAIN ############################
+	################### MAIN ############################ *********
 
 	#HELP
 	if "--help" in options: sys.exit(help())
@@ -135,35 +202,38 @@ Examples:               dedmap 1.1.1.1
 	#CHECKING FOR EMPTY HOSTS
 	if not targets: sys.exit("\nNo targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
 
-
-	#DNS LOOKUP
-	if "--dns" in options: log.info("\nPerforming a DNS lookup.....\n\n{}\n".format(array(list(zip(targets,TARGET_IP)))))
-
-	#SWEEP SCAN
-	if "--sweep" in options: sweep()
+	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
+	STARTING_TIME = time()
 	
+	#STARTING THE SCAN *********
+	scan()
 	
-	log.info("\nScan completed in: {} seconds.".format(round(time() - STARTING_TIME), 2))
+	#TOTAL COMPLETION TIME
+	log.info("\nScan completed in: {} seconds.".format(round(time() - STARTING_TIME, 2)))
 	
 	#DEBUGGING ---- COMMENT OR UNCOMMENT TO TURN OFF OR ON. MOVE THIS PART OF CODE UP OR BELOW SOME OTHER CODE TO PERFORM EXECUTION ORDER SPECIFIC DEBUGGING
 	#debug()
 
+	#REPORTING
 	log.info("\nReport BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )\n")
 
 #EXCEPTION HANDLING
 except IndexError: sys.exit("\nIP-RANGE only supported in last octet .i.e 1.1.1.1-100\n")
 except socket.gaierror: print("\nUnable to resolve hostname!\n")
-except socket.error: print("\nCouldn't connect to the server\n")
-except KeyboardInterrupt: sys.exit("\nQuitting... Ctrl+C was pressed\n")
+except socket.error: print("\nCouldn't connect to the server!\n")
+except KeyboardInterrupt:
+	log.info("\nQuitting... Ctrl+C was pressed\n")
+	write()
+	sys.exit()
 except getopt.GetoptError:
 	if sys.argv[1] == "-p" or sys.argv[1] == "--port": sys.exit("\nOption -p requires an argument\n")
-	elif sys.argv[1] == "-r" or sys.argv[1] == "--report": sys.exit("\nOption -r requires an argument\n")
+	elif sys.argv[1] == "-w" or sys.argv[1] == "--write": sys.exit("\nOption -w requires an argument\n")
 	else: sys.exit("\nArgument Value Missing/Option Not Valid!\n")
 else:
-	if "--report" in options: subprocess.call("cat temp.log >> {} && rm temp.log".format(options["--report"]), shell = True)
-	else: subprocess.call("rm temp.log", shell = True)
+	write()
+
 	
 ########## LIMITATIONS ############
 
-#MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
-#SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.1-200
+#THE USER MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
+#THE TOOL SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.(1-200)  --> This is also a safety measure to prevent the user from scanning the ENTIRE INTERNET (1-255.1-255.1-255.1-255) and blowing up his/her NIC, RAM, CPU and HARDDISK :p
