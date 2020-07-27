@@ -21,8 +21,8 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 ```sh
 $ git clone https://github.com/7Ragnarok7/DEDMAP.git
 $ cd DEDMAP
-$ chmod +x install
-$ ./install
+$ chmod +x install.sh
+$ ./install.sh
 ```
 All the requirements will be installed automatically.
 Just execute the "install.sh" file ;)
@@ -31,8 +31,8 @@ Just execute the "install.sh" file ;)
  
 ```sh
 $ cd DEDMAP
-$ chmod +x uninstall
-$ ./uninstall
+$ chmod +x uninstall.sh
+$ ./uninstall.sh
 ```
 
 
