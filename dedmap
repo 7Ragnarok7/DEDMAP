@@ -41,11 +41,15 @@ Options:
                         -p user; (scan user ports from 1024 to 49151)
                         -p private; (scan private ports from 49152 to 65535)
                         -p all; (scan all ports from 0 to 65535)
--t, --tcp               perform a tcp scan (default if not specified)
+-t, --tcp               perform a tcp scan (default scan if not specified)
 -u, --udp               perform a udp scan
 -s, --sweep             perform a sweep scan
+-m, --mode<wan/lan>     select the mode for sweep scan (default = wan)
+                        select lan mode for better scanning speeds in lan network
+                        Ex: -sm lan; -sm wan;
 -o, --os                perform a os detection
 -r, --report<filename>  saves the results in a file
+                        Ex: -r report.txt
 
 Examples:               dedmap 1.1.1.1
                         dedmap localhost
@@ -91,15 +95,17 @@ Examples:               dedmap 1.1.1.1
 	def sweep():
 		log.info("\nPerforming a sweep scan.....\n")
 		for ip in TARGET_IP:
-			response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip)) #MAX WAITING TIME HAVE BEEN SET TO 0.1 SEC. REDUCE TO INCREASE SCANNING SPEED.
+			if "--verbose" in options: print("Scanning {} .....".format(ip))
+			if "--mode" not in options or options["--mode"] == "wan": response = os.popen("ping -b -c 1 -w 1 {}".format(ip))
+			else: response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip))
 			if "ttl" in response.readlines()[1].lower():
 				log.info("{} --> Live".format(ip))
 				live_targets.append(ip) #STORING ALL THE LIVE TARGETS
-		log.info("\n{} hosts found live.\n".format(len(live_targets)))
+		log.info("\n{} hosts alive.\n".format(len(live_targets)))
 		
 	#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
-	options, targets = getopt.getopt(sys.argv[1:], 'sdotuhvp:r:', ['sweep', 'dns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'report='])
-
+	options, targets = getopt.getopt(sys.argv[1:], 'sdotuhvp:r:m:', ['sweep', 'dns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'report=', 'mode='])
+	
 	#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT 
 	for item in targets:
 		if "-" in item:
@@ -113,10 +119,11 @@ Examples:               dedmap 1.1.1.1
 	open_ports = []
 
 	#CONSTANTS
-	POSSIBLE_OPTIONS = {"-s":"--sweep", "-d":"--dns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-r":"--report"}
+	POSSIBLE_OPTIONS = {"-s":"--sweep", "-m":"--mode", "-d":"--dns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-r":"--report"}
 	TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
 	TARGET_LEN = len(TARGET_IP)
 	OPTION_LEN = len(options)
+	
 	#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
 	priority()
 
@@ -126,7 +133,7 @@ Examples:               dedmap 1.1.1.1
 	if "--help" in options: sys.exit(help())
 
 	#CHECKING FOR EMPTY HOSTS
-	if not targets: sys.exit("No targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
+	if not targets: sys.exit("\nNo targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
 
 
 	#DNS LOOKUP
@@ -144,16 +151,18 @@ Examples:               dedmap 1.1.1.1
 	log.info("\nReport BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )\n")
 
 #EXCEPTION HANDLING
-except getopt.GetoptError: sys.exit("option -p requires argument")
-except IndexError: sys.exit("IP-RANGE only supported in last octet .i.e 1.1.1.1-100")
-except socket.gaierror: sys.exit("Unable to resolve hostname!")
-except socket.error: sys.exit("Couldn't connect to the server")
+except IndexError: sys.exit("\nIP-RANGE only supported in last octet .i.e 1.1.1.1-100\n")
+except socket.gaierror: print("\nUnable to resolve hostname!\n")
+except socket.error: print("\nCouldn't connect to the server\n")
 except KeyboardInterrupt: sys.exit("\nQuitting... Ctrl+C was pressed\n")
-
-finally:
+except getopt.GetoptError:
+	if sys.argv[1] == "-p" or sys.argv[1] == "--port": sys.exit("\nOption -p requires an argument\n")
+	elif sys.argv[1] == "-r" or sys.argv[1] == "--report": sys.exit("\nOption -r requires an argument\n")
+	else: sys.exit("\nArgument Value Missing/Option Not Valid!\n")
+else:
 	if "--report" in options: subprocess.call("cat temp.log >> {} && rm temp.log".format(options["--report"]), shell = True)
 	else: subprocess.call("rm temp.log", shell = True)
-
+	
 ########## LIMITATIONS ############
 
 #MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
