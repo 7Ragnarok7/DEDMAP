@@ -1,20 +1,31 @@
 #!/bin/python
 
 #IMPORTING REQUIRED LIBRARIES
+import os
 import socket
+from datetime import datetime
 from time import time
 from funcy import flatten
 from numpy import array
 import subprocess
 import sys
 import getopt
+import logging as log
 
-print("\nStarting DEDMAP ( https://7ragnarok7.github.io/DEDMAP ) .....")
-#GRAPHICS/TEXT ART
-subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell=True)
+try:
+	#SETTING UP A LOGGING SYSTEM
+	log.basicConfig(level = log.INFO, format = '  %(message)s', handlers = [log.FileHandler('temp.log'), log.StreamHandler()])
+	
+	#GRAPHICS/TEXT ART
+	subprocess.call('echo && pyfiglet -c RED dedmap -f Bloody', shell = True)
 
-#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
-def help(): print("""
+	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
+	STARTING_TIME = time()
+	log.info("\nStarting DEDMAP at {} ( https://7ragnarok7.github.io/DEDMAP ) .....".format(datetime.now().strftime('"%B %d, %Y" %H:%M:%S')))
+	with open("temp.log", "a") as file: file.write("\nCommand used: {}\n".format(" ".join(sys.argv)))
+
+	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
+	def help(): print("""
 DEDMAP ( https://7ragnarok7.github.io/DEDMAP )
 
 Usage: dedmap [--option(s)] [target(s)]
@@ -52,76 +63,98 @@ Examples:               dedmap 1.1.1.1
 
 
 
-#DEFINED A FUNCTION FOR DEBUGGING
-def debug():
-	print(targets)
-	print(options)
-	print(TARGET_IP)
-	print(TARGET_LEN)
-	print(OPTION_LEN)
+	#DEFINED A FUNCTION FOR DEBUGGING
+	def debug():
+		print(targets)
+		print(options)
+		print(TARGET_IP)
+		print(TARGET_LEN)
+		print(OPTION_LEN)
+		print(live_targets)
+		print(open_ports)
 	
-#DESIGNED A FUNTION TO GIVE PRIORITY TO LONG-FORMAT ARGUMENTS
-def priority():
-	for item in POSSIBLE_OPTIONS:
-		if item in options and POSSIBLE_OPTIONS[item] in options: del(options[item])
-		elif item in options: options[POSSIBLE_OPTIONS[item]] = options.pop(item)
+	#DESIGNED A FUNTION TO GIVE PRIORITY TO LONG-FORMAT ARGUMENTS
+	def priority():
+		for item in POSSIBLE_OPTIONS:
+			if item in options and POSSIBLE_OPTIONS[item] in options: del(options[item])
+			elif item in options: options[POSSIBLE_OPTIONS[item]] = options.pop(item)
 		
-#DESIGNED AN ALGORITHM TO CONVERT IP-RANGE TO A LIST OF IP'S
-def convert(seperated, index):
-	new_targets = []
-	octets = seperated[0].split(".")
-	new = [i for i in range(int(octets[3]), int(seperated[1]) + 1)]
-	for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
-	targets[index] = new_targets
+	#DESIGNED AN ALGORITHM TO CONVERT IP-RANGE TO A LIST OF IP'S
+	def convert(seperated, index):
+		new_targets = []
+		octets = seperated[0].split(".")
+		new = [i for i in range(int(octets[3]), int(seperated[1]) + 1)]
+		for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
+		targets[index] = new_targets
 	
-#SCANNER FUNCTION
-def scanner(t, p):
-	pass
+	#SWEEP-SCAN FUNCTION
+	def sweep():
+		log.info("\nPerforming a sweep scan.....\n")
+		for ip in TARGET_IP:
+			response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip)) #MAX WAITING TIME HAVE BEEN SET TO 0.1 SEC. REDUCE TO INCREASE SCANNING SPEED.
+			if "ttl" in response.readlines()[1].lower():
+				log.info("{} --> Live".format(ip))
+				live_targets.append(ip) #STORING ALL THE LIVE TARGETS
+		log.info("\n{} hosts found live.\n".format(len(live_targets)))
+		
+	#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
+	options, targets = getopt.getopt(sys.argv[1:], 'sdotuhvp:r:', ['sweep', 'dns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'report='])
 
-#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
-try: options, targets = getopt.getopt(sys.argv[1:], 'sdotuhvp:d:', ['sweep', 'dns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'report='])
-except getopt.GetoptError: sys.exit("option -p requires argument")
-
-#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT
-try: 
+	#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT 
 	for item in targets:
 		if "-" in item:
 			new = item.split("-")
 			if "".join(new[0].split(".")).isdigit(): convert(new, targets.index(item))
-except IndexError: sys.exit("IP-RANGE only supported in last octet .i.e 1.1.1.1-100")
 
-#VARIABLES
-targets = list(flatten(targets)) #CONVERTING NESTED LISTS RETURNED FROM CONVERT() TO NORMAL LISTS
-options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
+	#VARIABLES
+	targets = list(flatten(targets)) #CONVERTING NESTED LISTS RETURNED FROM CONVERT() TO NORMAL LISTS
+	options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
+	live_targets = []
+	open_ports = []
+
+	#CONSTANTS
+	POSSIBLE_OPTIONS = {"-s":"--sweep", "-d":"--dns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-r":"--report"}
+	TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
+	TARGET_LEN = len(TARGET_IP)
+	OPTION_LEN = len(options)
+	#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
+	priority()
+
+	################### MAIN ############################
+
+	#HELP
+	if "--help" in options: sys.exit(help())
+
+	#CHECKING FOR EMPTY HOSTS
+	if not targets: sys.exit("No targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
+
+
+	#DNS LOOKUP
+	if "--dns" in options: log.info("\nPerforming a DNS lookup.....\n\n{}\n".format(array(list(zip(targets,TARGET_IP)))))
+
+	#SWEEP SCAN
+	if "--sweep" in options: sweep()
 	
-#CONSTANTS
-STARTING_TIME = time()
-POSSIBLE_OPTIONS = {"-s":"--sweep", "-d":"--dns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-r":"--report"}
-try: TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
+	
+	log.info("\nScan completed in: {} seconds.".format(round(time() - STARTING_TIME), 2))
+	
+	#DEBUGGING ---- COMMENT OR UNCOMMENT TO TURN OFF OR ON. MOVE THIS PART OF CODE UP OR BELOW SOME OTHER CODE TO PERFORM EXECUTION ORDER SPECIFIC DEBUGGING
+	#debug()
+
+	log.info("\nReport BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )\n")
+
+#EXCEPTION HANDLING
+except getopt.GetoptError: sys.exit("option -p requires argument")
+except IndexError: sys.exit("IP-RANGE only supported in last octet .i.e 1.1.1.1-100")
 except socket.gaierror: sys.exit("Unable to resolve hostname!")
-TARGET_LEN = len(TARGET_IP)
-OPTION_LEN = len(options)
-#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
-priority()
+except socket.error: sys.exit("Couldn't connect to the server")
+except KeyboardInterrupt: sys.exit("\nQuitting... Ctrl+C was pressed\n")
 
-#DEBUGGING
-debug()
+finally:
+	if "--report" in options: subprocess.call("cat temp.log >> {} && rm temp.log".format(options["--report"]), shell = True)
+	else: subprocess.call("rm temp.log", shell = True)
 
-################### MAIN ############################
+########## LIMITATIONS ############
 
-#HELP
-if "--help" in options: sys.exit(help())
-
-#CHECKING FOR EMPTY HOSTS
-if not targets: sys.exit("No targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
-
-#DNS LOOKUP
-if "--dns" in options: print("Performing a DNS lookup.....\n\n{}\n".format(array(list(zip(targets,TARGET_IP)))))
-
-
-
-
-########## BUGS/COMPABILITY ISSUES ############
 #MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
 #SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.1-200
-
