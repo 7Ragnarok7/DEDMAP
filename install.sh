@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo .....................INSTALLING DEDMAP..........................
+chmod +x dedmap
 sudo apt-get install python3 python3-pip
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 read -p "Select python3 as default if it is not already from the menu below. Press anything to continue :- "

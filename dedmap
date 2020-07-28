@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 #IMPORTING REQUIRED LIBRARIES
 import os
@@ -197,10 +197,14 @@ Examples:               dedmap 1.1.1.1
 	################### MAIN ############################ *********
 
 	#HELP
-	if "--help" in options: sys.exit(help())
+	if "--help" in options:
+		write()
+		sys.exit(help())
 
 	#CHECKING FOR EMPTY HOSTS
-	if not targets: sys.exit("\nNo targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
+	if not targets:
+		write()
+		sys.exit("\nNo targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
 
 	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
 	STARTING_TIME = time()
