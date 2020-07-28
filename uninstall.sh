@@ -1,5 +1,5 @@
 #!/bin/bash
 
 sudo rm /usr/bin/dedmap
-echo .......................DEDMAP UNINSTALLED............................
-echo -e "\nIt's sad to see you go :("
+echo -e "\n.......................DEDMAP UNINSTALLED............................"
+echo -e "\nIt's sad to see you go :(\n"
