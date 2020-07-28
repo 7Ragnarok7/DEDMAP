@@ -39,7 +39,7 @@ $ ./uninstall.sh
  - Supports IP-RANGES (1.1.1.1-100)
  - Supports Sweep Scanning (Ping Sweep)
  - Has a turbo mode (lan mode) for sweep scanning. The turbo mode can be used both in lan and wan but it is recommended to use only in lan as it may decrease the accuracy of the scan in a wan network. 
- - Is clever. Scans only the live targets is a sweep scan in combined with other scans.
+ - Is clever. Scans only the live targets if a sweep scan in combined with other scans.
  - Is flexible. Multiple scanning options can be combined together based on requirements.
  - Supports Verbose mode
  - Supports Writing the Output to a file.
