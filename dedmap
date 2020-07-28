@@ -46,6 +46,7 @@ DEDMAP ( https://7ragnarok7.github.io/DEDMAP )
 Usage: dedmap [--option(s)] [target(s)]
 
 By default a tcp scan will be performed if no options are provided.
+-t option must be exclusively used if any other option is used like -v
 By default the well-known top 1024 ports will be scanned if no ports are specified.
 Long Options (--<options>) have more priority.
 
@@ -59,15 +60,14 @@ Options:
                         -p user; (scan user ports from 1024 to 49151)
                         -p private; (scan private ports from 49152 to 65535)
                         -p all; (scan all ports from 0 to 65535)
--t, --tcp               perform a tcp scan (default scan if not specified)
--u, --udp               perform a udp scan
+-t, --tcp               perform a tcp scan (default scan if NO OPTIONS ARE specified)
+-u, --udp               perform a udp scan (NOT WORKING PRESENTLY!!!!)
 -s, --sweep             perform a sweep scan
 -m, --mode<wan/lan>     select the mode for sweep scan (default = wan)
                         Select lan mode(turbo mode) for better scanning speeds (upto 10x)
                         It is recommended to use the turbo mode only on a lan network
                         as it might result loss of accuracy in wan networks
                         Ex: -sm lan; -sm wan;
--o, --os                perform a os detection
 -w, --write<filename>   writes the results in a file
                         Ex: -w report.txt
 
@@ -97,7 +97,6 @@ Examples:               dedmap 1.1.1.1
 		print(TARGET_LEN)
 		print(OPTION_LEN)
 		print(live_targets)
-		print(open_ports)
 	
 	#DESIGNED A FUNTION TO GIVE PRIORITY TO LONG-FORMAT ARGUMENTS
 	def priority():
@@ -113,15 +112,79 @@ Examples:               dedmap 1.1.1.1
 		for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
 		targets[index] = new_targets
 	
-	#TCP / UDP SCANNER
-	#def tcp_udp(mode, start, end):
-	#	log.info("\nPerforming a {} scan.....\n".format(mode))
-	#	if "--sweep" in options:
-	#		for ip in live_targets:
-	#			if len(ports):
-	#				for p in ports:
-						
-				
+	#TCP / UDP SCANNER ***************
+	def tcp_udp(mode, start, end):
+		log.info("\nPerforming a {} scan.....\n".format(mode))
+		if "--sweep" in options:
+			log.info("\nFound {} live targets!\nScanning only the live hosts as a sweep scan was performed before.".format(len(live_targets)))
+			for ip in live_targets:
+				log.info("---------------- Scanning {} ---------------\n".format(ip))
+				port_count = 0
+				if len(ports):
+					for p in ports:
+						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+						else:
+							write()
+							sys.exit("\nInvalid mode specified!\n")
+						sock.settimeout(0.1)
+						result = sock.connect_ex((ip, port))
+						if not result:
+							port_count += 1
+							log.info("  PORT {}  -->   OPEN   ".format(p))
+						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+						sock.close()
+					log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, len(ports), ip))
+				else:
+					for p in range(start, end):
+						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+						else:
+							write()
+							sys.exit("\nInvalid mode specified!\n")
+						sock.settimeout(0.1)
+						result = sock.connect_ex((ip, p))
+						if not result:
+							port_count +=1
+							log.info("  PORT {}  -->   OPEN   ".format(p))
+						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+						sock.close()
+					log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, end - start, ip))		
+		else:
+			log.info("\nScanning all the {} targets as no sweep scan was performed.\n".format(len(TARGET_IP)))
+			for ip in TARGET_IP:
+				if "--verbose" in options: print("---------------- Scanning {} ---------------\n".format(ip))
+				port_count = 0
+				if len(ports):
+					for p in ports:
+						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+						else:
+							write()
+							sys.exit("\nInvalid mode specified!\n")
+						sock.settimeout(0.1)	
+						result = sock.connect_ex((ip, p))
+						if not result:
+							port_count += 1
+							log.info("  PORT {}  -->   OPEN   ".format(p))
+						elif reusult and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+						sock.close()
+					if not port_count: log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, len(ports), ip))
+				else:
+					for p in range(start, end):
+						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+						else:
+							write()
+							sys.exit("\nInvalid mode specified!\n")
+						sock.settimeout(0.1)
+						result = sock.connect_ex((ip, p))
+						if not result:
+							port_count +=1
+							log.info("  PORT {}  -->   OPEN   ".format(p))
+						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+						sock.close()
+					if not port_count: log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, end - start, ip))
 				
 	
 	#MAIN SCANNING FUNCTION ********
@@ -149,21 +212,21 @@ Examples:               dedmap 1.1.1.1
 			log.info(array(list(zip(hostnames, live_targets))))
 			
 		#TCP/UDP SCAN
-	#	if "--tcp" in options or OPTION_LEN == 0:
-	#		if "--port" not in options: tcp_udp("tcp", 0, 1024)
-	#		elif options["--port"] == "user": tcp_udp("tcp", 1024, 49152)
-	#		elif options["--port"] == "private": tcp_udp("tcp", 49152, 65536)
-	#		elif options["--port"] == "all": tcp_udp("tcp", 0, 65536)
+		if "--tcp" in options or OPTION_LEN == 0: #MUST SPECIFY -t OPTION IN ANY OTHER OPTION IS GIVEN (EVEN -v)
+			if "--port" not in options: tcp_udp("tcp", 0, 1024)
+			elif options["--port"] == "user": tcp_udp("tcp", 1024, 49152)
+			elif options["--port"] == "private": tcp_udp("tcp", 49152, 65536)
+			elif options["--port"] == "all": tcp_udp("tcp", 0, 65536)
 			
-	#	if "--udp" in options: tcp_udp("udp")
-	#		if "--port" not in options: tcp_udp("udp", 0, 1024)
-	#		elif options["--port"] == "user": tcp_udp("udp", 1024, 49152)
-	#		elif options["--port"] == "private": tcp_udp("udp", 49152, 65536)
-	#		elif options["--port"] == "all": tcp_udp("udp", 0, 65536)
-	#		else: print("Invalid port option specified!")
+		if "--udp" in options:
+			if "--port" not in options: tcp_udp("udp", 0, 1024)
+			elif options["--port"] == "user": tcp_udp("udp", 1024, 49152)
+			elif options["--port"] == "private": tcp_udp("udp", 49152, 65536)
+			elif options["--port"] == "all": tcp_udp("udp", 0, 65536)
+			else: print("Invalid port option specified!")
 		
 	#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
-	options, targets = getopt.getopt(sys.argv[1:], 'sdrotuhvp:w:m:', ['sweep', 'dns', 'rdns', 'os', 'tcp', 'udp', 'help', 'verbose', 'port=', 'write=', 'mode='])
+	options, targets = getopt.getopt(sys.argv[1:], 'sdrtuhvp:w:m:', ['sweep', 'dns', 'rdns', 'tcp', 'udp', 'help', 'verbose', 'port=', 'write=', 'mode='])
 	
 	#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT 
 	for item in targets:
@@ -176,11 +239,9 @@ Examples:               dedmap 1.1.1.1
 	options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
 	ports = []
 	live_targets = []
-	open_ports = []
-	
 
 	#CONSTANTS
-	POSSIBLE_OPTIONS = {"-s":"--sweep", "-m":"--mode", "-d":"--dns", "-r":"--rdns", "-o":"--os", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-w":"--write"}
+	POSSIBLE_OPTIONS = {"-s":"--sweep", "-m":"--mode", "-d":"--dns", "-r":"--rdns", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-w":"--write"}
 	TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
 	TARGET_LEN = len(TARGET_IP)
 	OPTION_LEN = len(options)
@@ -237,7 +298,19 @@ else:
 	write()
 
 	
-########## LIMITATIONS ############
+########## LIMITATIONS AS OF NOW ############
 
+#UDP SCAN NOT WORKING PRESENTLY!!!!
+#IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
 #THE USER MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
 #THE TOOL SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.(1-200)  --> This is also a safety measure to prevent the user from scanning the ENTIRE INTERNET (1-255.1-255.1-255.1-255) and blowing up his/her NIC, RAM, CPU and HARDDISK :p
+
+
+########### TO DO #################
+#FIX UDP SCANNING
+#ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVEN BASED VISUAL RESPONSES.
+#ADD SUPPORT FOR OS DETECTION IN OPTION
+#USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
+#TEST AND ADD SUPPORT FOR WINDOWS
+#INCLUDE NMAP SCRIPTING ENGINE
+#BEAT NMAP :p
