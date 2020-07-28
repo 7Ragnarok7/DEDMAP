@@ -35,44 +35,47 @@ $ chmod +x uninstall.sh
 $ ./uninstall.sh
 ```
 ### Highlights :-
- - 
- - 
- - 
- - 
- - 
+ - Packed with lots of additional features all in one place.
+ - Supports IP-RANGES (1.1.1.1-100)
+ - Supports Sweep Scanning (Ping Sweep)
+ - Has a turbo mode (lan mode) for sweep scanning. The turbo mode can be used both in lan and wan but it is recommended to use only in lan as it may decrease the accuracy of the scan in a wan network. 
+ - Is clever. Scans only the live targets is a sweep scan in combined with other scans.
+ - Is flexible. Multiple scanning options can be combined together based on requirements.
+ - Supports Verbose mode
+ - Supports Writing the Output to a file.
+ - Supports various port specification options
+ - Is colorful. Provides colored event based visual responses.
 
 ### Usage :-
 
 ```sh
 $ dedmap [--option(s)] [target(s)]
 ```
-Usage: dedmap [--option(s)] [target(s)]
+ - By default a tcp scan will be performed if no options are provided.
+ - -t option must be exclusively used if any other option is used like -v
+ - By default the well-known top 1024 ports will be scanned if no ports are specified.
+ - Long Options (--<options>) have more priority.
 
-By default a tcp scan will be performed if no options are provided.
--t option must be exclusively used if any other option is used like -v
-By default the well-known top 1024 ports will be scanned if no ports are specified.
-Long Options (--<options>) have more priority.
-
-Options:
--h, --help              show this help message and exit
--v, --verbose           run in verbose mode
--d, --dns               performs a dns lookup
--r, --rdns				performs a reverse dns lookup
--p, --port<port(s)>     only scan specified port(s)
-                        Ex: -p 21; -p 21,22,23;
-                        -p user; (scan user ports from 1024 to 49151)
-                        -p private; (scan private ports from 49152 to 65535)
-                        -p all; (scan all ports from 0 to 65535)
--t, --tcp               perform a tcp scan (default scan if NO OPTIONS ARE specified)
--u, --udp               perform a udp scan (NOT WORKING PRESENTLY!!!!)
--s, --sweep             perform a sweep scan
--m, --mode<wan/lan>     select the mode for sweep scan (default = wan)
-                        Select lan mode(turbo mode) for better scanning speeds (upto 10x)
-                        It is recommended to use the turbo mode only on a lan network
-                        as it might result loss of accuracy in wan networks
-                        Ex: -sm lan; -sm wan;
--w, --write<filename>   writes the results in a file
-                        Ex: -w report.txt
+### Options: :-
+ - -h, --help              show this help message and exit
+ - -v, --verbose           run in verbose mode
+ - -d, --dns               performs a dns lookup
+ - -r, --rdns				performs a reverse dns lookup
+ - -p, --port<port(s)>     only scan specified port(s)
+ -                       Ex: -p 21; -p 21,22,23;
+ -                      -p user; (scan user ports from 1024 to 49151)
+ -                       -p private; (scan private ports from 49152 to 65535)
+ -                       -p all; (scan all ports from 0 to 65535)
+ - -t, --tcp               perform a tcp scan (default scan if NO OPTIONS ARE specified)
+ - -u, --udp               perform a udp scan (NOT WORKING PRESENTLY!!!!)
+ - -s, --sweep             perform a sweep scan
+ - -m, --mode<wan/lan>     select the mode for sweep scan (default = wan)
+ -                       Select lan mode(turbo mode) for better scanning speeds (upto 10x)
+ -                       It is recommended to use the turbo mode only on a lan network
+ -                       as it might result loss of accuracy in wan networks
+ -                       Ex: -sm lan; -sm wan;
+ - -w, --write<filename>   writes the results in a file
+ -                       Ex: -w report.txt
 
 ### Examples :-
 
