@@ -151,7 +151,7 @@ Examples:               dedmap 1.1.1.1
 						sock.close()
 					log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, end - start, ip))		
 		else:
-			log.info("\nScanning all the {} targets as no sweep scan was performed.\n".format(len(TARGET_IP)))
+			log.info("\nScanning all {} targets as no sweep scan was performed.\n".format(len(TARGET_IP)))
 			for ip in TARGET_IP:
 				if "--verbose" in options: print("---------------- Scanning {} ---------------\n".format(ip))
 				port_count = 0
