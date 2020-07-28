@@ -16,11 +16,12 @@ import logging as log
 try:
 	#SETTING UP A COLOR SCHEME FOR BETTER VISUALISATION
 	init()
-	BLUE = Fore.BLUE
-	RED = Fore.RED
-	GREEN = Fore.GREEN
-	RESET = Fore.RESET
-	GRAY = Fore.LIGHTBLACK_EX
+	BLUE = Fore.BLUE   			#FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
+	RED = Fore.RED	   			#FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
+	GREEN = Fore.GREEN 			#FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERIES AND HELP MENU
+	RESET = Fore.RESET			#FOR RESETTING TO DEFAULT SHELL COLOR
+	GRAY = Fore.LIGHTBLACK_EX	#FOR MARKING AN UNSUCCESSFUL HOST/PORT DISCOVERY IN VERBOSE MODE
+	YELLOW = Fore.YELLOW		#FOR MARKING DEBUGGING STATEMENTS
 	
 	#SETTING UP A LOGGING SYSTEM
 	log.basicConfig(level = log.INFO, format = '  %(message)s', handlers = [log.FileHandler('temp.log'), log.StreamHandler()])
@@ -35,12 +36,12 @@ try:
 	#FUNCTION TO WRITE OUTPUT TO A FILE
 	def write():
 		if "--write" in options: 
-			print("\nWriting the output to {},\n".format(options["--write"]))
+			print("\n{}Writing the output to {}{}\n".format(GREEN, options["--write"], RESET))
 			subprocess.call("cat temp.log >> {} && rm temp.log".format(options["--write"]), shell = True)
 		else: subprocess.call("rm temp.log", shell = True)
 
 	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
-	def help(): print("""
+	def help(): print(GREEN + """
 DEDMAP ( https://7ragnarok7.github.io/DEDMAP )
 
 Usage: dedmap [--option(s)] [target(s)]
@@ -85,18 +86,18 @@ Examples:               dedmap 1.1.1.1
                         dedmap -sr 1.1.1.1-255 (Perform a dns lookup on all the live targets in the network)
                         dedmap -st 1.1.1.0-255 (To scan only the hosts which are alive in the network)
                         dedmap -w report.txt 127.0.0.1
-""")
+""" + RESET)
 
 
 
 	#DEFINED A FUNCTION FOR DEBUGGING
 	def debug():
-		print(targets)
-		print(options)
-		print(TARGET_IP)
-		print(TARGET_LEN)
-		print(OPTION_LEN)
-		print(live_targets)
+		print(YELLOW, targets, RESET)
+		print(YELLOW, options, RESET)
+		print(YELLOW, TARGET_IP, RESET)
+		print(YELLOW, TARGET_LEN, RESET)
+		print(YELLOW, OPTION_LEN, RESET)
+		print(YELLOW, live_targets, RESET)
 	
 	#DESIGNED A FUNTION TO GIVE PRIORITY TO LONG-FORMAT ARGUMENTS
 	def priority():
@@ -114,11 +115,11 @@ Examples:               dedmap 1.1.1.1
 	
 	#TCP / UDP SCANNER ***************
 	def tcp_udp(mode, start, end):
-		log.info("\nPerforming a {} scan.....\n".format(mode))
+		log.info("\n{}Performing a {} scan.....{}\n".format(RED, mode, RESET))
 		if "--sweep" in options:
-			log.info("\nFound {} live targets!\nScanning only the live hosts as a sweep scan was performed before.".format(len(live_targets)))
+			log.info("\n{}Found {} live targets!\nScanning only the live hosts as a sweep scan was performed before.{}".format(GREEN, len(live_targets), RESET))
 			for ip in live_targets:
-				log.info("---------------- Scanning {} ---------------\n".format(ip))
+				log.info("\n{}---------------- Scanning {} ---------------{}\n".format(RED, ip, RESET))
 				port_count = 0
 				if len(ports):
 					for p in ports:
@@ -126,34 +127,34 @@ Examples:               dedmap 1.1.1.1
 						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 						else:
 							write()
-							sys.exit("\nInvalid mode specified!\n")
+							sys.exit("\n{}Invalid scan option specified!{}\n".format(RED, RESET))
 						sock.settimeout(0.1)
 						result = sock.connect_ex((ip, port))
 						if not result:
 							port_count += 1
-							log.info("  PORT {}  -->   OPEN   ".format(p))
-						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+							log.info("{}  PORT {}  -->   OPEN   {}".format(GREEN, p, RESET))
+						elif result and "--verbose" in options: print("{}  PORT {}  -->   CLOSED   {}".format(GRAY, p, RESET))
 						sock.close()
-					log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, len(ports), ip))
+					log.info("\n{}Found {} out of {} ports open for the host: {}{}\n".format(GREEN, port_count, len(ports), ip, RESET))
 				else:
 					for p in range(start, end):
 						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 						else:
 							write()
-							sys.exit("\nInvalid mode specified!\n")
+							sys.exit("\n{}Invalid scan option specified!{}\n".format(RED, RESET))
 						sock.settimeout(0.1)
 						result = sock.connect_ex((ip, p))
 						if not result:
 							port_count +=1
-							log.info("  PORT {}  -->   OPEN   ".format(p))
-						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+							log.info("{}  PORT {}  -->   OPEN   {}".format(GREEN, p, RESET))
+						elif result and "--verbose" in options: print("{}  PORT {}  -->   CLOSED   {}".format(GRAY, p, RESET))
 						sock.close()
-					log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, end - start, ip))		
+					log.info("\n{}Found {} out of {} ports open for the host: {}{}\n".format(GREEN, port_count, end - start, ip, RESET))		
 		else:
-			log.info("\nScanning all {} targets as no sweep scan was performed.\n".format(len(TARGET_IP)))
+			log.info("\n{}Scanning all {} targets as no sweep scan was performed.{}\n".format(RED, len(TARGET_IP), RESET))
 			for ip in TARGET_IP:
-				if "--verbose" in options: print("---------------- Scanning {} ---------------\n".format(ip))
+				if "--verbose" in options: print("\n{}---------------- Scanning {} ---------------{}\n".format(RED, ip, RESET))
 				port_count = 0
 				if len(ports):
 					for p in ports:
@@ -161,69 +162,75 @@ Examples:               dedmap 1.1.1.1
 						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 						else:
 							write()
-							sys.exit("\nInvalid mode specified!\n")
+							sys.exit("\n{}Invalid scan option specified!{}\n".format(RED, RESET))
 						sock.settimeout(0.1)	
 						result = sock.connect_ex((ip, p))
 						if not result:
 							port_count += 1
-							log.info("  PORT {}  -->   OPEN   ".format(p))
-						elif reusult and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+							log.info("{}  PORT {}  -->   OPEN   {}".format(GREEN, p, RESET))
+						elif result and "--verbose" in options: print("{}  PORT {}  -->   CLOSED   {}".format(GRAY, p, RESET))
 						sock.close()
-					if not port_count: log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, len(ports), ip))
+					if not port_count: log.info("\n{}Found {} out of {} ports open for the host: {}{}\n".format(GREEN, port_count, len(ports), ip, RESET))
 				else:
 					for p in range(start, end):
 						if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 						elif mode == "udp": sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 						else:
 							write()
-							sys.exit("\nInvalid mode specified!\n")
+							sys.exit("\n{}Invalid scan option specified!{}\n".format(RED, RESET))
 						sock.settimeout(0.1)
 						result = sock.connect_ex((ip, p))
 						if not result:
 							port_count +=1
-							log.info("  PORT {}  -->   OPEN   ".format(p))
-						elif result and "--verbose" in options: print("  PORT {}  -->   CLOSED   ".format(p))
+							log.info("{}  PORT {}  -->   OPEN   {}".format(GREEN, p, RESET))
+						elif result and "--verbose" in options: print("{}  PORT {}  -->   CLOSED   {}".format(GRAY, p, RESET))
 						sock.close()
-					if not port_count: log.info("\nFound {} out of {} ports open for the host: {}\n".format(port_count, end - start, ip))
+					if not port_count: log.info("\n{}Found {} out of {} ports open for the host: {}{}\n".format(GREEN, port_count, end - start, ip, RESET))
 				
 	
 	#MAIN SCANNING FUNCTION ********
 	def scan():
 		#DNS LOOKUP
-		if "--dns" in options: log.info("\nPerforming a DNS lookup.....\n\n{}\n".format(array(list(zip(targets, TARGET_IP)))))
+		if "--dns" in options: log.info("\n{}Performing a DNS lookup.....{}\n\n{}{}{}\n".format(RED, RESET, GREEN, array(list(zip(targets, TARGET_IP))), RESET))
 		
 		#SWEEP SCAN
 		if "--sweep" in options:
-			log.info("\nPerforming a sweep scan.....\n")
+			log.info("\n{}Performing a sweep scan.....{}\n".format(RED, RESET))
 			for ip in TARGET_IP:
-				if "--verbose" in options: print("Scanning {} .....".format(ip))
+				if "--verbose" in options: print("{}Scanning {} .....{}".format(RED, ip, RESET))
 				if "--mode" not in options or options["--mode"] == "wan": response = os.popen("ping -b -c 1 -w 1 {}".format(ip))
-				else: response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip))
+				elif options["--mode"] == "lan": response = os.popen("ping -b -c 1 -W 0.1 {}".format(ip))
+				else: sys.exit("\n{}Invalid sweep scan mode specified!{}\n".format(RED, RESET))
 				if "ttl" in response.readlines()[1].lower():
-					log.info("{} --> Live".format(ip))
+					log.info("{}{} --> Live{}".format(GREEN, ip, RESET))
 					live_targets.append(ip) #STORING ALL THE LIVE TARGETS
-			log.info("\n{} hosts alive out of {}\n".format(len(live_targets), TARGET_LEN))
+			log.info("\n{}{} hosts alive out of {}{}\n".format(GREEN, len(live_targets), TARGET_LEN, RESET))
 		
 		#REVERSE-DNS LOOKUP
 		if "--rdns" in options:
-			log.info("\nPerforming a REVERSE-DNS lookup.....\n")
+			log.info("\n{}Performing a REVERSE-DNS lookup.....{}\n".format(RED, RESET))
 			if "--sweep" in options: hostnames = list(map(socket.getfqdn, live_targets))
 			else: hostnames = list(map(socket.getfqdn, TARGET_IP))
 			log.info(array(list(zip(hostnames, live_targets))))
 			
 		#TCP/UDP SCAN
 		if "--tcp" in options or OPTION_LEN == 0: #MUST SPECIFY -t OPTION IN ANY OTHER OPTION IS GIVEN (EVEN -v)
+			print("".join([str(i) for i in ports]))
 			if "--port" not in options: tcp_udp("tcp", 0, 1024)
 			elif options["--port"] == "user": tcp_udp("tcp", 1024, 49152)
 			elif options["--port"] == "private": tcp_udp("tcp", 49152, 65536)
 			elif options["--port"] == "all": tcp_udp("tcp", 0, 65536)
+			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): tcp_udp("tcp", 0, 0)
+			else: print("{}\nInvalid port option specified!{}\n".format(RED, RESET))
 			
 		if "--udp" in options:
 			if "--port" not in options: tcp_udp("udp", 0, 1024)
 			elif options["--port"] == "user": tcp_udp("udp", 1024, 49152)
 			elif options["--port"] == "private": tcp_udp("udp", 49152, 65536)
 			elif options["--port"] == "all": tcp_udp("udp", 0, 65536)
-			else: print("Invalid port option specified!")
+			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): tcp_udp("udp", 0, 0)
+			else: print("\n{}Invalid port option specified!{}\n".format(RED, RESET))
+			
 		
 	#GETTING HOSTNAMES, IPS AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
 	options, targets = getopt.getopt(sys.argv[1:], 'sdrtuhvp:w:m:', ['sweep', 'dns', 'rdns', 'tcp', 'udp', 'help', 'verbose', 'port=', 'write=', 'mode='])
@@ -265,7 +272,7 @@ Examples:               dedmap 1.1.1.1
 	#CHECKING FOR EMPTY HOSTS
 	if not targets:
 		write()
-		sys.exit("\nNo targets specified!\n\nUsage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.\n".format(array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))))
+		sys.exit("\n{}No targets specified!{}\n\n{}Usage: dedmap [--option(s)] [target(s)]\n\n{}\n\nUse dedmap -h or --help to get a detailed usage instruction.{}\n".format(RED, RESET, GREEN, array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values())))), RESET))
 
 	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
 	STARTING_TIME = time()
@@ -274,26 +281,26 @@ Examples:               dedmap 1.1.1.1
 	scan()
 	
 	#TOTAL COMPLETION TIME
-	log.info("\nScan completed in: {} seconds.".format(round(time() - STARTING_TIME, 2)))
+	log.info("\n{}Scan completed in: {} seconds.{}".format(BLUE, round(time() - STARTING_TIME, 2), RESET))
 	
 	#DEBUGGING ---- COMMENT OR UNCOMMENT TO TURN OFF OR ON. MOVE THIS PART OF CODE UP OR BELOW SOME OTHER CODE TO PERFORM EXECUTION ORDER SPECIFIC DEBUGGING
 	#debug()
 
 	#REPORTING
-	log.info("\nReport BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )\n")
+	log.info("\n{}Report BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues ){}\n".format(YELLOW, RESET))
 
 #EXCEPTION HANDLING
-except IndexError: sys.exit("\nIP-RANGE only supported in last octet .i.e 1.1.1.1-100\n")
-except socket.gaierror: print("\nUnable to resolve hostname!\n")
-except socket.error: print("\nCouldn't connect to the server!\n")
+except IndexError: sys.exit("\n{}IP-RANGE only supported in last octet .i.e 1.1.1.1-100{}\n".format(RED, RESET))
+except socket.gaierror: print("\n{}Unable to resolve hostname!{}\n".format(RED, RESET))
+except socket.error: print("\n{}Couldn't connect to the server!{}\n".format(RED, RESET))
 except KeyboardInterrupt:
-	log.info("\nQuitting... Ctrl+C was pressed\n")
+	log.info("\n{}Quitting... Ctrl+C was pressed{}\n".format(RED, RESET))
 	write()
 	sys.exit()
 except getopt.GetoptError:
-	if sys.argv[1] == "-p" or sys.argv[1] == "--port": sys.exit("\nOption -p requires an argument\n")
-	elif sys.argv[1] == "-w" or sys.argv[1] == "--write": sys.exit("\nOption -w requires an argument\n")
-	else: sys.exit("\nArgument Value Missing/Option Not Valid!\n")
+	if sys.argv[1] == "-p" or sys.argv[1] == "--port": sys.exit("\n{}Option -p requires an argument{}\n".format(RED, RESET))
+	elif sys.argv[1] == "-w" or sys.argv[1] == "--write": sys.exit("\n{}Option -w requires an argument{}\n".format(RED, RESET))
+	else: sys.exit("\n{}Argument Value Missing/Option Not Valid!{}\n".format(RED, RESET))
 else:
 	write()
 
