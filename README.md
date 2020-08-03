@@ -43,7 +43,9 @@ $ ./uninstall.sh
 
  - Supports Sweep Scanning (Ping Sweep)
 
- - Has a turbo mode (lan mode) for sweep scanning. The turbo mode can be used both in lan and wan but it is recommended to use only in lan as it may decrease the accuracy of the scan in a wan network. 
+ - Has a turbo mode (lan mode) for sweep scanning. The turbo mode can be used both in lan and wan but it is recommended to use only in lan as it may decrease the accuracy of the scan in a wan network.
+ 
+ - The wan mode can also be used in a lan network for more accurate results. Lan mode = Performance, Wan mode = Accuracy.
 
  - Is clever. Scans only the live targets if a sweep scan in combined with other scans.
 
