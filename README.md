@@ -76,7 +76,7 @@ $ dedmap [--option(s)] [target(s)]
 ```
  - By default a tcp scan will be performed if no options are provided.
 
- - -t option must be exclusively used if any other option is used like -v
+ - -t option must be exclusively used if any other option is used like -v or -s.
 
  - By default the well-known top 1024 ports will be scanned if no ports are specified.
 
@@ -126,7 +126,7 @@ $ dedmap -p 20 1.1.1.1
 $ dedmap -p 20,21,22 1.1.1.1
 $ dedmap -sm lan -p 21 192.168.1.1-255 (Perform a tcp port scan in lan mode on all the live hosts)
 $ dedmap -s 1.1.1.1-255
-$ dedmap -sr 1.1.1.1-255 (Perform a dns lookup on all the live targets in the network)
+$ dedmap -sr 1.1.1.1-255 (Perform a reverse dns lookup on all the live targets in the network)
 $ dedmap -st 1.1.1.0-255 (To scan only the hosts which are alive in the network)
 $ dedmap -w report.txt 127.0.0.1
 ```
