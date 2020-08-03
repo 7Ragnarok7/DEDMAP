@@ -101,7 +101,7 @@ $ dedmap [--option(s)] [target(s)]
  
  - -t, --tcp              perform a tcp scan (default scan if NO OPTIONS are specified)
 
- - -u, --udp              perform a udp scan (NOT WORKING PRESENTLY!!!!)
+ - -u, --udp              perform a udp scan (Dosen't seems to work using socket in python)
 
  - -s, --sweep            perform a sweep scan
 
@@ -139,8 +139,10 @@ $ dedmap -w report.txt 127.0.0.1
 
  - UDP scanning is not working as of now but will be fixed soon.
 
-### Limitations as of now :-
+### Disclaimer :-
+ - This tool is made for educational purpose only. Use it with/on sytems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
+### Limitations as of now :-
  - UDP SCAN NOT WORKING PRESENTLY!!!!
 
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
@@ -150,8 +152,6 @@ $ dedmap -w report.txt 127.0.0.1
  - THE TOOL SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.(1-200)  --> This is also a safety measure to prevent the user from scanning the ENTIRE INTERNET (1-255.1-255.1-255.1-255) and blowing up his/her NIC, RAM, CPU and HARDDISK :p
 
 ### To Do :-
- - FIX UDP SCANNING
-
  - ADD SUPPORT FOR OS DETECTION IN OPTION
 
  - USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
