@@ -89,7 +89,7 @@ $ dedmap [--option(s)] [target(s)]
 
  - -d, --dns               performs a dns lookup
 
- - -r, --rdns		            performs a reverse dns lookup
+ - -r, --rdns		   performs a reverse dns lookup
 
  - -p, --port<port(s)>     only scan specified port(s)
  -                         Ex: -p 21; -p 21,22,23;
@@ -97,7 +97,7 @@ $ dedmap [--option(s)] [target(s)]
  -                        -p private; (scan private ports from 49152 to 65535)
  -                        -p all; (scan all ports from 0 to 65535)
  
- - -t, --tcp              perform a tcp scan (default scan if NO OPTIONS ARE specified)
+ - -t, --tcp              perform a tcp scan (default scan if NO OPTIONS are specified)
 
  - -u, --udp              perform a udp scan (NOT WORKING PRESENTLY!!!!)
 
