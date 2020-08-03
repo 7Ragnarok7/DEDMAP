@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo .....................INSTALLING DEDMAP..........................
+echo -e "\n.....................INSTALLING DEDMAP..........................\n"
 chmod +x dedmap
 sudo apt-get install python3 python3-pip
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
@@ -11,5 +11,5 @@ sudo pip3 install -r requirements.txt
 sudo mkdir -p /usr/share/figlet
 sudo cp fonts/* /usr/lib/python3/dist-packages/pyfiglet/fonts/
 sudo cp dedmap /usr/bin/
-echo ......................INSTALLATION FINISHED......................
+echo -e "\n......................INSTALLATION FINISHED......................"
 echo -e "\nThanks for installing dedmap.\nUse dedmap -h or --help for usage instructions.\n"
