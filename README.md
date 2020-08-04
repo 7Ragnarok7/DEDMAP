@@ -13,6 +13,8 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 **DEDMAP** tries to scan a target ip or range of ip's and find services that are running and listening on some ports.
 
+# Check out the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
+
 ### Requirements :-  
  - [Python 3][py]
 
@@ -137,13 +139,10 @@ $ dedmap -w report.txt 127.0.0.1
 
  - This tool has not been tested in Windows yet and will not work most probably. Feel free to experiment.
 
- - UDP scanning is not working as of now but will be fixed soon.
-
 ### Disclaimer :-
  - This tool is made for educational purpose only. Use it with/on sytems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
 ### Limitations as of now :-
- - UDP SCAN NOT WORKING PRESENTLY!!!!
 
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
 
