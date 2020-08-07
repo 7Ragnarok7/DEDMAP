@@ -8,8 +8,8 @@ read -p "Select python3 as default if it is not already from the menu below. Pre
 sudo update-alternatives --config python
 sudo pip3 install -U pip
 sudo pip3 install -r requirements.txt
-sudo mkdir -p /usr/share/figlet
 sudo cp fonts/* /usr/lib/python3/dist-packages/pyfiglet/fonts/
+sudo cp fonts/* /usr/local/lib/python3/dist-packages/pyfiglet/fonts/
 sudo cp dedmap /usr/bin/
 echo -e "\n......................INSTALLATION FINISHED......................"
 echo -e "\nThanks for installing dedmap.\nUse dedmap -h or --help for usage instructions.\n"
