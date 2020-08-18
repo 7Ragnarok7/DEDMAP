@@ -143,7 +143,6 @@ $ dedmap -w report.txt 127.0.0.1
  - This tool is made for educational purpose only. Use it with/on sytems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
 ### Limitations as of now :-
-
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
 
  - THE USER MUST MAINTAIN A SEQUENCE "dedmap <options> <target>"
@@ -151,15 +150,17 @@ $ dedmap -w report.txt 127.0.0.1
  - THE TOOL SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.(1-200)  --> This is also a safety measure to prevent the user from scanning the ENTIRE INTERNET (1-255.1-255.1-255.1-255) and blowing up his/her NIC, RAM, CPU and HARDDISK :p
 
 ### To Do :-
- - ADD SUPPORT FOR OS DETECTION IN OPTION
+ - [x] FIX UDP SCANNING
+ 
+ - [x] ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVEN BASED VISUAL RESPONSES.
+ 
+ - [] USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
 
- - USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
+ - [] TEST AND ADD SUPPORT FOR WINDOWS
 
- - TEST AND ADD SUPPORT FOR WINDOWS
+ - [] INCLUDE NMAP SCRIPTING ENGINE
 
- - INCLUDE NMAP SCRIPTING ENGINE
-
- - BEAT NMAP :p
+ - [] BEAT NMAP :p
 
 ### Reporting :-
  - Report BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )
