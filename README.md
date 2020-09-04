@@ -163,7 +163,7 @@ $ dedmap -w report.txt 127.0.0.1
  - [ ] BEAT NMAP :p
 
 ### Reporting :-
- - Report BUGS at ( https://github.com/7Ragnarok7/DEDMAP/issues )
+ - Report BUGS and SUGGESTIONS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
 
 [//]: # "References below :-"
 
