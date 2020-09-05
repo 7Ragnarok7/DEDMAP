@@ -13,7 +13,7 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 **DEDMAP** tries to scan a target ip or range of ip's and find services that are running and listening on some ports.
 
-# Check out the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
+### Check out the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
 
 ### Requirements :-  
  - [Python 3][py]
