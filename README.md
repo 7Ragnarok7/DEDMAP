@@ -49,9 +49,9 @@ $ ./uninstall.sh
  
  - The wan mode can also be used in a lan network for more accurate results. Lan mode = Performance, Wan mode = Accuracy.
 
- - Is clever. Scans only the live targets if a sweep scan in combined with other scans.
-
  - Is flexible. Multiple scanning options can be combined together based on requirements.
+
+ - Is clever. Scans only the live targets if a sweep scan in combined with other scans.
 
  - Supports Verbose mode
 
