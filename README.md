@@ -107,7 +107,7 @@ $ dedmap [--option(s)] [target(s)]
  
  - -t, --tcp              perform a tcp scan (default scan if NO OPTIONS are specified)
 
- - -u, --udp              perform a udp scan (Dosen't seems to work using socket in python)
+ - -u, --udp              perform a udp scan (Dosen't seems to work as of now using socket in python)
 
  - -s, --sweep            perform a sweep scan
 
@@ -148,6 +148,8 @@ $ dedmap -w report.txt 127.0.0.1
 
 ### Limitations as of now :-
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
+ 
+ - UDP DOSEN'T WORKS PROPERLY AS OF NOW.
 
  - THE USER MUST MAINTAIN A SEQUENCE "dedmap [--option(s)] [target(s)]"
 
