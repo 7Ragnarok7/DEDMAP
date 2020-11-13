@@ -15,9 +15,9 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 ### Checkout the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
 
-### CODE OF CONDUCT --> https://github.com/7Ragnarok7/DEDMAP/blob/master/CODE_OF_CONDUCT.md
+### [CODE OF CONDUCT](CODE_OF_CONDUCT)
 
-### CONTRIBUTING --> https://github.com/7Ragnarok7/DEDMAP/blob/master/CONTRIBUTING.md
+### [CONTRIBUTING](CONTRIBUTING)
 
 ### Requirements :-  
  - [Python 3][py]
