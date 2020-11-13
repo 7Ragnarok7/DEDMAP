@@ -5,15 +5,19 @@
 ##### DEDMAP is a ***Simple*** but ***Powerful***, ***Clever*** and ***Flexible*** Cross-Platform [Port Scanning][ps] tool made with ease to use and convenience in mind. 
 
 Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divided into the following three ranges:-
- - System or well-known ports: from 0 to 1023
+ - System or reserved ports: from 0 to 1023
  
  - User or registered ports: from 1024 to 49151
  
- - Dynamic or private ports: all > 49151 
+ - Dynamic or private ports: from 49151 to 65535 
 
 **DEDMAP** tries to scan a target ip or range of ip's and find services that are running and listening on some ports.
 
 ### Checkout the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
+
+### CODE OF CONDUCT --> https://github.com/7Ragnarok7/DEDMAP/blob/master/CODE_OF_CONDUCT.md
+
+### CONTRIBUTING --> https://github.com/7Ragnarok7/DEDMAP/blob/master/CONTRIBUTING.md
 
 ### Requirements :-  
  - [Python 3][py]
@@ -29,7 +33,7 @@ $ cd DEDMAP
 $ chmod +x install.sh
 $ ./install.sh
 ```
-All the requirements will be installed automatically.
+All the additional requirements will be installed automatically.
 Just execute the "install.sh" file ;)
 
 ### Uninstallation :-
@@ -61,7 +65,7 @@ $ ./uninstall.sh
 
  - Is colorful. Provides colored event based visual responses.
 
-### Color schemes :-
+### LEGEND/Color schemes :-
  - BLUE	  -->  FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
  
  - RED    -->  FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
@@ -80,7 +84,7 @@ $ dedmap [--option(s)] [target(s)]
 ```
  - By default a tcp scan will be performed if no options are provided.
 
- - -t option must be exclusively used if any other option is used like -v or -s.
+ - -t option must be exclusively used if any other option is used like -p or -v or -s.
 
  - By default the well-known top 1024 ports will be scanned if no ports are specified.
 
@@ -150,20 +154,21 @@ $ dedmap -w report.txt 127.0.0.1
  - THE TOOL SUPPORTS IP-RANGE ONLY IN THE LAST OCTET .i.e 1.1.1.(1-200)  --> This is also a safety measure to prevent the user from scanning the ENTIRE INTERNET (1-255.1-255.1-255.1-255) and blowing up his/her NIC, RAM, CPU and HARDDISK :p
 
 ### To Do :-
- - [x] FIX UDP SCANNING
+ - ~~[] FIX UDP SCANNING~~
  
  - [x] ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVEN BASED VISUAL RESPONSES.
  
  - [ ] USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
 
- - [ ] TEST AND ADD SUPPORT FOR WINDOWS
+ - [ ] TEST AND ADD SUPPORT FOR WINDOWS AND TERMUX
 
- - [ ] INCLUDE NMAP SCRIPTING ENGINE
+ - ~~[ ] INCLUDE NMAP SCRIPTING ENGINE~~
 
  - [ ] BEAT NMAP :p
 
 ### Reporting :-
  - Report BUGS and SUGGESTIONS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
+ - Reporting guide/template [(can be found here.)](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
 
 [//]: # "References below :-"
 
