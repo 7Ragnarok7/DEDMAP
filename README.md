@@ -13,13 +13,15 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
  
  - Dynamic or private ports: from 49151 to 65535 
 
-**DEDMAP** tries to scan a target ip or range of ip's and find services that are running and listening on some ports.
+**DEDMAP** tries to scan a target IP or range of IP's and find services that are running and listening on some ports.
+
+**DEDMAP** can also scan a range of hosts to find live hosts.
 
 ### Checkout the Video Walkthrough here --> https://youtu.be/e1V83h4R5sI 
 
-### [CODE OF CONDUCT](CODE_OF_CONDUCT)
+### [CODE OF CONDUCT](https://github.com/7Ragnarok7/DEDMAP/blob/master/CODE_OF_CONDUCT.md)
 
-### [CONTRIBUTING](CONTRIBUTING)
+### [CONTRIBUTING](https://github.com/7Ragnarok7/DEDMAP/blob/master/CONTRIBUTING.md)
 
 ### Requirements :-  
  - [Python 3][py]
@@ -51,13 +53,13 @@ $ ./uninstall.sh
 
  - Supports Sweep Scanning (Ping Sweep)
 
- - Has a turbo mode (lan mode) for sweep scanning. The turbo mode can be used both in lan and wan but it is recommended to use only in lan as it may decrease the accuracy of the scan in a wan network.
+ - Has a turbo mode (LAN mode) for sweep scanning. The turbo mode can be used both in LAN and wan but it is recommended to use only in LAN as it may decrease the accuracy of the scan in a wan network.
  
- - The wan mode can also be used in a lan network for more accurate results. Lan mode = Performance, Wan mode = Accuracy.
+ - The wan mode can also be used in a LAN network for more accurate results. Lan mode = Performance, Wan mode = Accuracy.
 
- - Is flexible. Multiple scanning options can be combined together based on requirements.
+ - Is flexible. Multiple scanning options can be combined based on requirements.
 
- - Is clever. Scans only the live targets if a sweep scan in combined with other scans.
+ - Is clever. Scans only the live targets if a sweep scan is combined with other scans.
 
  - Supports Verbose mode
 
@@ -65,12 +67,12 @@ $ ./uninstall.sh
 
  - Supports various port specification options
 
- - Is colorful. Provides colored event based visual responses.
+ - Is colourful. Provides coloured event-based visual responses.
 
 ### LEGEND/Color schemes :-
  - BLUE	  -->  FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
  
- - RED    -->  FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
+ - RED    -->  FOR MARKING STARTING/ENDING OF AN EVENT OR  ERROR
  
  - GREEN  -->  FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERIES AND HELP MENU
 
@@ -84,20 +86,20 @@ $ ./uninstall.sh
 ```sh
 $ dedmap [--option(s)] [target(s)]
 ```
- - By default a tcp scan will be performed if no options are provided.
+ - By default, a TCP scan will be performed if no options are provided.
 
  - -t option must be exclusively used if any other option is used like -p or -v or -s.
 
- - By default the well-known top 1024 ports will be scanned if no ports are specified.
+ - By default, the top 1024 ports will be scanned if no ports are specified.
 
  - Long Options (--<options>) have more priority.
 
-### Options: :-
+### Options :-
  - -h, --help              show this help message and exit
 
  - -v, --verbose           run in verbose mode
 
- - -d, --dns               performs a dns lookup
+ - -d, --dns               performs a DNS lookup
 
  - -r, --rdns		   performs a reverse dns lookup
 
@@ -107,9 +109,9 @@ $ dedmap [--option(s)] [target(s)]
  -                        -p private; (scan private ports from 49152 to 65535)
  -                        -p all; (scan all ports from 0 to 65535)
  
- - -t, --tcp              perform a tcp scan (default scan if NO OPTIONS are specified)
+ - -t, --tcp              perform a TCP scan (default scan if NO OPTIONS are specified)
 
- - -u, --udp              perform a udp scan (Dosen't seems to work as of now using socket in python)
+ - -u, --udp              perform a UDP scan (Doesn't seems to work as of now using the socket in python)
 
  - -s, --sweep            perform a sweep scan
 
@@ -141,17 +143,17 @@ $ dedmap -st 1.1.1.0-255 (To scan only the hosts which are alive in the network)
 $ dedmap -w report.txt 127.0.0.1
 ```
 ### Additional Notice :-
- - This tool is expected to have lots of bugs as it is in a very early stage.
+ - This tool is expected to have lots of bugs as it is at a very early stage.
 
  - This tool has not been tested in Windows yet and will not work most probably. Feel free to experiment.
 
 ### Disclaimer :-
- - This tool is made for educational purpose only. Use it with/on sytems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
+ - This tool is made for educational purpose only. Use it with/on systems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
-### Limitations as of now :-
+### Limitations as of now:-
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
  
- - UDP DOSEN'T WORKS PROPERLY AS OF NOW.
+ - UDP DOESN'T WORKS PROPERLY AS OF NOW.
 
  - THE USER MUST MAINTAIN A SEQUENCE "dedmap [--option(s)] [target(s)]"
 
@@ -166,13 +168,9 @@ $ dedmap -w report.txt 127.0.0.1
 
  - [ ] TEST AND ADD SUPPORT FOR WINDOWS AND TERMUX
 
- - ~~[ ] INCLUDE NMAP SCRIPTING ENGINE~~
-
- - [ ] BEAT NMAP :p
-
 ### Reporting :-
  - Report BUGS and SUGGESTIONS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
- - Reporting guide/template [(can be found here.)](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
+ - Reporting guide/template [can be found here.](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
 
 [//]: # "References below :-"
 
@@ -180,6 +178,3 @@ $ dedmap -w report.txt 127.0.0.1
 [py]:<https://www.python.org>
 [pp]:<https://pip.pypa.io/en/stable/installing>
 [page]:<https://7ragnarok7.github.io/DEDMAP>
-
-
-
