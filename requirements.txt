@@ -1,3 +1,11 @@
+logging
+getopt
+subprocess
+socket
+time
+sys
+flatten
+datetime
 pyfiglet
 funcy
 numpy

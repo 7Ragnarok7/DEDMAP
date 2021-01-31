@@ -23,7 +23,9 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 ### [CONTRIBUTING](https://github.com/7Ragnarok7/DEDMAP/blob/master/CONTRIBUTING.md)
 
-### Requirements :-  
+### Requirements :- 
+ - [Termux][tm] (if installing on an android device)
+  
  - [Python 3][py]
 
  - [Pip][pp]
@@ -31,8 +33,12 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
  - *A bit of love and care* :)
  
 ### Installation :-
+ - Download the latest release from [HERE](https://github.com/7Ragnarok7/DEDMAP/releases)
+ 
+ - Extract the archive
+ 
+ - Follow the Below steps using ***termux-install.sh*** if installing for termux
 ```sh
-$ git clone https://github.com/7Ragnarok7/DEDMAP.git
 $ cd DEDMAP
 $ chmod +x install.sh
 $ ./install.sh
@@ -40,7 +46,12 @@ $ ./install.sh
 All the additional requirements will be installed automatically.
 Just execute the "install.sh" file ;)
 
+The tool can be run without installing as well (./dedmap) but it is recommended to install it.
+After installing the tool, the color of the **DEDMAP banner** will change from *WHITE* to *RED*. 
+
 ### Uninstallation :-
+
+ - Follow the Below steps using ***termux-uninstall.sh*** if installing for termux
 ```sh
 $ cd DEDMAP
 $ chmod +x uninstall.sh
@@ -48,22 +59,24 @@ $ ./uninstall.sh
 ```
 ### Highlights :-
  - Packed with lots of additional features all in one place.
+ 
+ - Full Support for Android devices (*via* termux)
 
  - Supports IP-RANGES (1.1.1.1-100)
 
- - Supports Sweep Scanning (Ping Sweep)
+ - Supports Network Scanning (Ping Sweep)
 
- - Has a turbo mode (LAN mode) for sweep scanning. The turbo mode can be used both in LAN and wan but it is recommended to use only in LAN as it may decrease the accuracy of the scan in a wan network.
+ - Has a turbo mode (LAN mode) for network scanning. The turbo mode can be used both in LAN and wan but it is recommended to use only in LAN as it may decrease the accuracy of the scan in a wan network.
  
  - The wan mode can also be used in a LAN network for more accurate results. Lan mode = Performance, Wan mode = Accuracy.
 
  - Is flexible. Multiple scanning options can be combined based on requirements.
 
- - Is clever. Scans only the live targets if a sweep scan is combined with other scans.
+ - Is clever. Scans only the live targets if a network scan is combined with other scans.
 
  - Supports Verbose mode
 
- - Supports Writing the Output to a file.
+ - Supports Saving the Output to a file. (The file generated is a dedmap file. Cat/Print it to view it's contents properly in a shell environment)
 
  - Supports various port specification options
 
@@ -74,7 +87,7 @@ $ ./uninstall.sh
  
  - RED    -->  FOR MARKING STARTING/ENDING OF AN EVENT OR  ERROR
  
- - GREEN  -->  FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERIES AND HELP MENU
+ - GREEN  -->  FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERY AND HELP MENU
 
  - RESET  -->  FOR RESETTING TO DEFAULT SHELL COLOR
 
@@ -88,7 +101,7 @@ $ dedmap [--option(s)] [target(s)]
 ```
  - By default, a TCP scan will be performed if no options are provided.
 
- - -t option must be exclusively used if any other option is used like -p or -v or -s.
+ - -t option must be exclusively provided if any other option is used like -p or -v or -n.
 
  - By default, the top 1024 ports will be scanned if no ports are specified.
 
@@ -101,7 +114,7 @@ $ dedmap [--option(s)] [target(s)]
 
  - -d, --dns               performs a DNS lookup
 
- - -r, --rdns		   performs a reverse dns lookup
+ - -r, --rdns		   	   performs a reverse dns lookup
 
  - -p, --port<port(s)>     only scan specified port(s)
  -                         Ex: -p 21; -p 21,22,23;
@@ -113,16 +126,16 @@ $ dedmap [--option(s)] [target(s)]
 
  - -u, --udp              perform a UDP scan (Doesn't seems to work as of now using the socket in python)
 
- - -s, --sweep            perform a sweep scan
+ - -n, --net              perform a network scan
 
- - -m, --mode<wan/lan>    select the mode for sweep scan (default = wan)
+ - -m, --mode<wan/lan>    select the mode for network scan (default = wan)
  -                        Select lan mode(turbo mode) for better scanning speeds (upto 10x)
  -                        It is recommended to use the turbo mode only on a lan network
  -                        as it might result loss of accuracy in wan networks
- -                        Ex: -sm lan; -sm wan;
+ -                        Ex: -nm lan; -nm wan;
 
- - -w, --write<filename>  writes the results in a file
- -                        Ex: -w report.txt
+ - -o, --out<filename>    saves the results in a file
+ -                        Ex: -o report.dedmap
 
 ### Examples :-
 Combine the options according to your requirements. Dedmap is flexible and clever enough :)
@@ -136,13 +149,15 @@ $ dedmap 1.1.1.1 2.2.2.2 3.3.3.3
 $ dedmap 1.1.1.1-100 google.com (Perform a tcp scan on all the hosts without pinging to bypass firewall icmp block)
 $ dedmap -p 20 1.1.1.1
 $ dedmap -p 20,21,22 1.1.1.1
-$ dedmap -sm lan -p 21 192.168.1.1-255 (Perform a tcp port scan in lan mode on all the live hosts)
-$ dedmap -s 1.1.1.1-255
-$ dedmap -sr 1.1.1.1-255 (Perform a reverse dns lookup on all the live targets in the network)
-$ dedmap -st 1.1.1.0-255 (To scan only the hosts which are alive in the network)
-$ dedmap -w report.txt 127.0.0.1
+$ dedmap -nm lan -p 21 192.168.1.1-255 (Perform a tcp port scan in lan mode on all the live hosts)
+$ dedmap -n 1.1.1.1-255
+$ dedmap -nr 1.1.1.1-255 (Perform a reverse dns lookup on all the live targets in the network)
+$ dedmap -nt 1.1.1.0-255 (To scan only the hosts which are alive in the network)
+$ dedmap -o report.dedmap 127.0.0.1
 ```
 ### Additional Notice :-
+ - The output file generated is a dedmap file. Cat/Print it to view it's contents properly in a shell environment.
+
  - This tool is expected to have lots of bugs as it is at a very early stage.
 
  - This tool has not been tested in Windows yet and will not work most probably. Feel free to experiment.
@@ -164,17 +179,20 @@ $ dedmap -w report.txt 127.0.0.1
  
  - [x] ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVEN BASED VISUAL RESPONSES.
  
+ - [x] TEST AND ADD SUPPORT FOR TERMUX
+ 
  - [ ] USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
 
- - [ ] TEST AND ADD SUPPORT FOR WINDOWS AND TERMUX
+ - [ ] TEST AND ADD SUPPORT FOR WINDOWS
 
 ### Reporting :-
  - Report BUGS and SUGGESTIONS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
  - Reporting guide/template [can be found here.](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
 
-[//]: # "References below :-"
+[//]: # "References below:-"
 
 [ps]:<https://www.techopedia.com/definition/4059/port-scanning>
 [py]:<https://www.python.org>
 [pp]:<https://pip.pypa.io/en/stable/installing>
 [page]:<https://7ragnarok7.github.io/DEDMAP>
+[tm]:<https://play.google.com/store/apps/details?id=com.termux>
