@@ -160,7 +160,7 @@ $ dedmap -o report.dedmap 127.0.0.1
 ### Additional Notice :-
  - The output file generated is a ***dedmap file***. Cat/Print it to view it's contents properly in a shell environment.
 
- - This tool is expected to have lots of bugs as it is at a very early stage.
+ - This tool is expected to have lots of bugs as it is in a very early stage.
 
  - This tool has not been tested in Windows yet and will not work most probably. Feel free to experiment.
 
