@@ -49,6 +49,8 @@ Just execute the "install.sh" file ;)
 The tool can be run without installing as well (./dedmap) but it is recommended to install it.
 After installing the tool, the color of the **DEDMAP banner** will change from *WHITE* to *RED*. 
 
+Update the tool by downloading the latest release and re-installing it again.
+
 ### Uninstallation :-
 
  - Follow the Below steps using ***termux-uninstall.sh*** if installing for termux
