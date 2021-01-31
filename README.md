@@ -76,7 +76,7 @@ $ ./uninstall.sh
 
  - Supports Verbose mode
 
- - Supports Saving the Output to a file. (The file generated is a dedmap file. Cat/Print it to view it's contents properly in a shell environment)
+ - Supports Saving the Output to a file. (The file generated is a ***dedmap file***. Cat/Print it to view it's contents properly in a shell environment)
 
  - Supports various port specification options
 
@@ -156,7 +156,7 @@ $ dedmap -nt 1.1.1.0-255 (To scan only the hosts which are alive in the network)
 $ dedmap -o report.dedmap 127.0.0.1
 ```
 ### Additional Notice :-
- - The output file generated is a dedmap file. Cat/Print it to view it's contents properly in a shell environment.
+ - The output file generated is a ***dedmap file***. Cat/Print it to view it's contents properly in a shell environment.
 
  - This tool is expected to have lots of bugs as it is at a very early stage.
 
