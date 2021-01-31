@@ -32,7 +32,7 @@ try:
 	else: call('echo && figlet -f Bloody dedmap', shell = True)
 
 	#INITIAL MESSAGE
-	log.info(f'\n{BLUE}Starting DEDMAP at {datetime.now().strftime("%B %d, %Y %H:%M:%S")} ( https://7ragnarok7.github.io/DEDMAP ) .....{RESET}')
+	log.info(f'\n{BLUE}Starting DEDMAP at {datetime.now().strftime("%B %d, %Y %H:%M:%S")} ( https://7Ragnarok7.github.io/DEDMAP ) .....{RESET}')
 	with open("temp.log", "a") as file: file.write(f'\nCommand used: {" ".join(argv)}\n')
 	
 	#FUNCTION TO SAVE THE OUTPUT TO A FILE
@@ -44,7 +44,7 @@ try:
 
 	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
 	def help(): print(GREEN + """
-DEDMAP ( https://7ragnarok7.github.io/DEDMAP )
+DEDMAP ( https://7Ragnarok7.github.io/DEDMAP )
 
 Usage: dedmap [--option(s)] [target(s)]
 
@@ -57,7 +57,7 @@ Options:
 -h, --help              show this help message and exit
 -v, --verbose           run in verbose mode
 -d, --dns               performs a dns lookup
--r, --rdns				performs a reverse dns lookup
+-r, --rdns              performs a reverse dns lookup
 -p, --port<port(s)>     only scan specified port(s)
                         Ex: -p 21; -p 21,22,23;
                         -p user; (scan user ports from 1024 to 49151)
@@ -187,7 +187,6 @@ Examples:               dedmap 1.1.1.1
 		
 		#TCP/UDP SCAN
 		if "--tcp" in options or OPTION_LEN == 0: #MUST SPECIFY -t OPTION IN ANY OTHER OPTION IS GIVEN (EVEN -v)
-			print("".join([str(i) for i in ports]))
 			if "--port" not in options: tcp_udp("tcp", 0, 1024)
 			elif options["--port"] == "user": tcp_udp("tcp", 1024, 49152)
 			elif options["--port"] == "private": tcp_udp("tcp", 49152, 65536)
@@ -278,4 +277,4 @@ except getopt.GetoptError:
 	if argv[1] == "-p" or argv[1] == "--port": exit(f"\n{RED}Option -p requires an argument{RESET}\n")
 	elif argv[1] == "-o" or argv[1] == "--out": exit(f"\n{RED}Option -o requires an argument{RESET}\n")
 	else: exit(f"\n{RED}Argument Value Missing/Option Not Valid!{RESET}\n")
-	out()
+else: out()
