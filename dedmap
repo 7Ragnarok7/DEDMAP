@@ -94,9 +94,8 @@ Examples:               dedmap 1.1.1.1
 	#DEFINED A FUNCTION FOR DEBUGGING
 	def debug():
 		print(YELLOW, targets, RESET)
-		print(YELLOW, options, RESET)
-		print(YELLOW, TARGET_IP, RESET)
 		print(YELLOW, TARGET_LEN, RESET)
+		print(YELLOW, options, RESET)
 		print(YELLOW, OPTION_LEN, RESET)
 		print(YELLOW, live_targets, RESET)
 	
@@ -140,11 +139,11 @@ Examples:               dedmap 1.1.1.1
 			log.info(f"\n{GREEN}Found {len(live_targets)} live targets!\nScanning only the live hosts as a network scan was performed before.{RESET}")
 			scan_targets = live_targets
 		else:
-			log.info(f"\n{RED}Scanning all {len(TARGET_IP)} targets as no network scan was performed.{RESET}\n")
-			scan_targets = TARGET_IP
+			log.info(f"\n{RED}Scanning all {len(targets)} targets as no network scan was performed.{RESET}\n")
+			scan_targets = targets.values()
 			
 		for ip in scan_targets:
-			log.info(f"\n{RED}---------------- Scanning {ip} ---------------{RESET}\n")
+			log.info(f"\n{RED}---------------- Scanning {SWAP_TARGETS[ip]} ({ip}) ---------------{RESET}\n")
 			port_count = 0
 		
 			if len(ports): port_range = ports
@@ -155,19 +154,19 @@ Examples:               dedmap 1.1.1.1
 				else:
 					out()
 					exit(f"\n{RED}Invalid scan option specified!{RESET}\n")
-			if port_count: log.info(f"\n{GREEN}Found {port_count} out of {len(port_range)} ports open for the host: {ip}{RESET}\n")
+			if port_count: log.info(f"\n{GREEN}Found {port_count} out of {len(port_range)} ports open for the host: {SWAP_TARGETS[ip]}{RESET}\n")
 	
 	#MAIN SCAN CALLING FUNCTION ********
 	def scan():
 		
 		#DNS LOOKUP
-		if "--dns" in options: log.info(f"\n{RED}Performing a DNS lookup.....{RESET}\n\n{GREEN}{array(list(zip(targets, TARGET_IP)))}{RESET}\n")
+		if "--dns" in options: log.info(f"\n{RED}Performing a DNS lookup.....{RESET}\n\n{GREEN}{targets}{RESET}\n")
 		
 		#NETWORK SCAN
 		if "--net" in options:
 			log.info(f"\n{RED}Performing a network scan.....{RESET}\n")
-			for ip in TARGET_IP:
-				if "--verbose" in options: print(f"{RED}Scanning {ip} .....{RESET}")
+			for ip in targets.values():
+				if "--verbose" in options: print(f"{RED}Scanning {SWAP_TARGETS[ip]} .....{RESET}")
 				if "--mode" not in options or options["--mode"] == "wan": response = popen(f"ping -b -c 1 -W 1 {ip}")
 				elif options["--mode"] == "lan": response = popen(f"ping -b -c 1 -W 0.1 {ip}")
 				else: exit(f"\n{RED}Invalid network scan mode specified!{RESET}\n")
@@ -180,8 +179,8 @@ Examples:               dedmap 1.1.1.1
 		#REVERSE-DNS LOOKUP
 		if "--rdns" in options:
 			log.info(f"\n{RED}Performing a REVERSE-DNS lookup.....{RESET}\n")
-			if "--net" in options: hostnames = list(map(socket.getfqdn, live_targets))
-			else: hostnames = list(map(socket.getfqdn, TARGET_IP))
+			if "--net" in options: hostnames = list(map(socket.gethostbyaddr, live_targets))
+			else: hostnames = list(map(socket.gethostbyaddr, targets.values()))
 			log.info(array(list(zip(hostnames, live_targets))))
 			
 		
@@ -206,7 +205,7 @@ Examples:               dedmap 1.1.1.1
 	#GETTING HOSTNAMES, IPs AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
 	options, targets = getopt.getopt(argv[1:], 'ndrtuhvp:o:m:', ['net', 'dns', 'rdns', 'tcp', 'udp', 'help', 'verbose', 'port=', 'out=', 'mode='])
 	
-	
+
 	#CHECKING WHETHER THERE IS AN IP-RANGE OR NOT 
 	for item in targets:
 		if "-" in item:
@@ -216,16 +215,21 @@ Examples:               dedmap 1.1.1.1
 	
 	#VARIABLES
 	targets = list(flatten(targets)) #CONVERTING NESTED LISTS RETURNED FROM CONVERT() TO NORMAL LISTS
+	targets = dict(zip(targets, list(map(socket.gethostbyname, targets)))) #CONVERTING THE TARGETS INTO A DICTIONARY WITH THEIR RESPECTIVE IPs FOR BETTER ADDRESSING
 	options = dict(options) #CONVERTING THE OPTIONS INTO A DICTIONARY FOR BETTER ADDRESSING
 	ports = []
 	live_targets = []
 	
 	#CONSTANTS
 	POSSIBLE_OPTIONS = {"-n":"--net", "-m":"--mode", "-d":"--dns", "-r":"--rdns", "-t":"--tcp", "-u":"--udp", "-h":"--help", "-v":"--verbose", "-p":"--port", "-o":"--out"}
-	TARGET_IP = list(map(socket.gethostbyname, targets)) #GETTING IPS FROM HOSTNAMES/DOMAIN NAMES
-	TARGET_LEN = len(TARGET_IP)
+	TARGET_LEN = len(targets)
 	OPTION_LEN = len(options)
+	SWAP_TARGETS = dict(zip(targets.values(), targets.keys())) #Same targets dictionary with keys and values swapped with each other
 	
+	#CHECKING FOR EMPTY HOSTS
+	if not targets:
+		out()
+		exit(f"\n{RED}No targets specified!{RESET}\n\n{GREEN}Usage: dedmap [--option(s)] [target(s)]\n\n{array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))}\n\nUse dedmap -h or --help to get a detailed usage instruction.{RESET}\n")
 	
 	#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
 	priority()
@@ -244,11 +248,6 @@ Examples:               dedmap 1.1.1.1
 	if "--help" in options:
 		out()
 		exit(help())
-
-	#CHECKING FOR EMPTY HOSTS
-	if not targets:
-		out()
-		exit(f"\n{RED}No targets specified!{RESET}\n\n{GREEN}Usage: dedmap [--option(s)] [target(s)]\n\n{array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))}\n\nUse dedmap -h or --help to get a detailed usage instruction.{RESET}\n")
 
 	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
 	STARTING_TIME = time()
