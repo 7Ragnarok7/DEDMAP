@@ -188,8 +188,11 @@ $ dedmap -o report.dedmap 127.0.0.1
  - [ ] TEST AND ADD SUPPORT FOR WINDOWS
 
 ### Reporting :-
- - Report BUGS and SUGGESTIONS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
+ - Report BUGS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
  - Reporting guide/template [can be found here.](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
+ 
+### Feedback :-
+ - Share your feedback and discuss about the project at [(https://github.com/7Ragnarok7/DEDMAP/discussions)](https://github.com/7Ragnarok7/DEDMAP/discussions)
 
 [//]: # "References below:-"
 
