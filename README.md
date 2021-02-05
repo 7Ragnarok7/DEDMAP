@@ -133,7 +133,7 @@ $ dedmap [--option(s)] [target(s)]
  - -m, --mode<wan/lan>    select the mode for network scan (default = wan)
  -                        Select lan mode(turbo mode) for better scanning speeds (upto 10x)
  -                        It is recommended to use the turbo mode only on a lan network
- -                        as it might result loss of accuracy in wan networks
+ -                        as it might result in loss of accuracy in wan networks
  -                        Ex: -nm lan; -nm wan;
 
  - -o, --out<filename>    saves the results in a file
