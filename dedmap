@@ -247,7 +247,8 @@ Examples:               dedmap 1.1.1.1
 	#HELP
 	if "--help" in options:
 		out()
-		exit(help())
+		help()
+		exit()
 
 	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
 	STARTING_TIME = time()
