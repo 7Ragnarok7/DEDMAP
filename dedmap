@@ -226,14 +226,19 @@ Examples:               dedmap 1.1.1.1
 	OPTION_LEN = len(options)
 	SWAP_TARGETS = dict(zip(targets.values(), targets.keys())) #Same targets dictionary with keys and values swapped with each other
 	
+	#HELP
+	if "--help" in options:
+		out()
+		exit(help())
+	
 	#CHECKING FOR EMPTY HOSTS
 	if not targets:
 		out()
 		exit(f"\n{RED}No targets specified!{RESET}\n\n{GREEN}Usage: dedmap [--option(s)] [target(s)]\n\n{array(list(zip(list(POSSIBLE_OPTIONS), list(POSSIBLE_OPTIONS.values()))))}\n\nUse dedmap -h or --help to get a detailed usage instruction.{RESET}\n")
 	
+	
 	#GIVING PRIORITY TO LONG-FORMAT ARGUMENTS
 	priority()
-	
 	
 	#GETTING SPECIFIC PORTS
 	if "--port" in options: 
@@ -243,12 +248,7 @@ Examples:               dedmap 1.1.1.1
 
 	
 	################### MAIN ############################ *********
-
-	#HELP
-	if "--help" in options:
-		out()
-		help()
-		exit()
+	
 
 	#RECORDING THE STARTING TIME TO CALCULATE TOTAL SCANNING TIME
 	STARTING_TIME = time()
