@@ -53,7 +53,7 @@ Update the tool by downloading the latest release and re-installing it again.
 
 ### Uninstallation :-
 
- - Follow the Below steps using ***termux-uninstall.sh*** if installing for termux
+ - Follow the Below steps using ***termux-uninstall.sh*** if uninstalling for termux
 ```sh
 $ cd DEDMAP
 $ chmod +x uninstall.sh
