@@ -105,7 +105,7 @@ $ dedmap [--option(s)] [target(s)]
 
  - -t option must be exclusively provided if any other option is used like -p or -v or -n.
 
- - By default, the top 1024 ports will be scanned if no ports are specified.
+ - By default, the top 100 commonly used ports will be scanned if no ports are specified.
 
  - Long Options (--<options>) have more priority.
 
@@ -120,6 +120,10 @@ $ dedmap [--option(s)] [target(s)]
 
  - -p, --port<port(s)>     only scan specified port(s)
  -                         Ex: -p 21; -p 21,22,23;
+ -						  -p top10; (scan top 10 commonly used ports)
+ -                        -p top100; (scan top 100 commonly used ports)
+ -                        -p top1000; (scan top 1000 commonly used ports)
+ -                        -p system; (scan system ports from 0 to 1023)
  -                        -p user; (scan user ports from 1024 to 49151)
  -                        -p private; (scan private ports from 49152 to 65535)
  -                        -p all; (scan all ports from 0 to 65535)
@@ -137,7 +141,7 @@ $ dedmap [--option(s)] [target(s)]
  -                        Ex: -nm lan; -nm wan;
 
  - -o, --out<filename>    saves the results in a file
- -                        Ex: -o report.dedmap
+ -                        Ex: -o report
 
 ### Examples :-
 Combine the options according to your requirements. Dedmap is flexible and clever enough :)
@@ -150,12 +154,13 @@ $ dedmap google.com yahoo.com
 $ dedmap 1.1.1.1 2.2.2.2 3.3.3.3
 $ dedmap 1.1.1.1-100 google.com (Perform a tcp scan on all the hosts without pinging to bypass firewall icmp block)
 $ dedmap -p 20 1.1.1.1
+$ dedmap -p top10 2.2.2.2
 $ dedmap -p 20,21,22 1.1.1.1
 $ dedmap -nm lan -p 21 192.168.1.1-255 (Perform a tcp port scan in lan mode on all the live hosts)
 $ dedmap -n 1.1.1.1-255
 $ dedmap -nr 1.1.1.1-255 (Perform a reverse dns lookup on all the live targets in the network)
 $ dedmap -nt 1.1.1.0-255 (To scan only the hosts which are alive in the network)
-$ dedmap -o report.dedmap 127.0.0.1
+$ dedmap -o report 127.0.0.1
 ```
 ### Additional Notice :-
  - The output file generated is a ***dedmap file***. Cat/Print it to view it's contents properly in a shell environment.
