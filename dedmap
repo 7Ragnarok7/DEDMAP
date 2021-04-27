@@ -137,8 +137,8 @@ Examples:               dedmap 1.1.1.1
 		
 		if not result:
 			port_count += 1
-			log.info(f"{GREEN}  PORT {p} ({TOP_100_PORTS[p]}) -->   OPEN   {RESET}")
-		elif result and "--verbose" in options: print(f"{GRAY}  PORT {p} ({TOP_100_PORTS[p]})  -->   CLOSED   {RESET}")
+			log.info(f"{GREEN}  PORT {p} ({TOP_100_PORTS[p] if p in TOP_100_PORTS else 'unknown'}) -->   OPEN   {RESET}")
+		elif result and "--verbose" in options: print(f"{GRAY}  PORT {p} ({TOP_100_PORTS[p] if p in TOP_100_PORTS else 'unknown'})  -->   CLOSED   {RESET}")
 		sock.close()	
 	
 	#TCP/UDP SCAN SELECTOR ***************
