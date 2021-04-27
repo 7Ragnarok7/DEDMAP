@@ -51,6 +51,11 @@ After installing the tool, the color of the **DEDMAP banner** will change from *
 
 Update the tool by downloading the latest release and re-installing it again.
 
+### Using the tool in Windows :-
+
+- Initially, Double-Click or launch the ***dedmap.bat*** once from a command-prompt for installing the requirements.
+- Furthermore, Lauch the tool using `dedmap` or `python dedmap` from a command-prompt.
+
 ### Uninstallation :-
 
  - Follow the Below steps using ***termux-uninstall.sh*** if uninstalling for termux
@@ -172,7 +177,9 @@ $ dedmap -o report 127.0.0.1
 ### Disclaimer :-
  - This tool is made for educational purpose only. Use it with/on systems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
-### Limitations as of now:-
+### Limitations as of now / Known Issues :-
+ - GENERATING A REPORT DOES NOT WORK PROPERLY IN WINDOWS.
+ 
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
  
  - UDP DOESN'T WORKS PROPERLY AS OF NOW.
@@ -188,9 +195,9 @@ $ dedmap -o report 127.0.0.1
  
  - [x] TEST AND ADD SUPPORT FOR TERMUX
  
+ - [x] TEST AND ADD SUPPORT FOR WINDOWS
+ 
  - [ ] USE MULTITHREADING TO DRASTICALLY IMPROVE THE PERFORMANCE OF THE TOOL
-
- - [ ] TEST AND ADD SUPPORT FOR WINDOWS
 
 ### Reporting :-
  - Report BUGS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
