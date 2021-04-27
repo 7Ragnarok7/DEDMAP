@@ -54,7 +54,7 @@ Update the tool by downloading the latest release and re-installing it again.
 ### Using the tool in Windows :-
 
 - Initially, Double-Click or launch the ***dedmap.bat*** once from a command-prompt for installing the requirements.
-- Furthermore, Lauch the tool using `dedmap` or `python dedmap` from a command-prompt.
+- Subsequent to the above step, Lauch the tool using `dedmap` or `python dedmap` command from a command-prompt inside the dedmap root directory.
 
 ### Uninstallation :-
 
@@ -81,9 +81,11 @@ $ ./uninstall.sh
 
  - Is clever. Scans only the live targets if a network scan is combined with other scans.
 
+ - Lists all the probable services/protocols being used by the respective open ports which are discovered.
+
  - Supports Verbose mode
 
- - Supports Saving the Output to a file. (The file generated is a ***dedmap file***. Cat/Print it to view it's contents properly in a shell environment)
+ - Supports Saving the Output to a file. (The file generated is a ***dedmap file***. cat/type it to view it's contents properly in a shell environment)
 
  - Supports various port specification options
 
