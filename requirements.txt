@@ -1,4 +1,3 @@
-logging
 datetime
 pyfiglet
 funcy

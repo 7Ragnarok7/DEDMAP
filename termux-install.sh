@@ -9,7 +9,7 @@ read -p "Select python3 as default if it is not already from the menu below. Pre
 update-alternatives --config python
 pip3 install -U pip
 pip3 install -r requirements.txt
-cp -f fonts/* ~/../usr/lib/python3.9/site-packages/pyfiglet/fonts/
+pyfiglet -L fonts/Bloody.flf
 mkdir -p ~/../usr/share/dedmap/
 cp -f dedmap ~/../usr/share/dedmap/
 ln -sf ~/../usr/share/dedmap/dedmap ~/../usr/bin/dedmap

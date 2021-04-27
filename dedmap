@@ -5,9 +5,9 @@ from datetime import datetime
 from time import time
 from funcy import flatten
 from numpy import array
-from sys import argv
+from sys import argv, platform
 from colorama import init, Fore
-from os import popen, path
+from os import popen, path, remove
 from subprocess import call
 import socket, getopt, logging as log
 
@@ -24,12 +24,17 @@ try:
 	#SETTING UP A LOGGING SYSTEM
 	log.basicConfig(level = log.INFO, format = '  %(message)s', handlers = [log.FileHandler('temp.log'), log.StreamHandler()])
 	
+	#SETTING UP OS-SPECIFIC COMMANDS
+	if platform == 'win32': PRINT = 'type'
+	else: PRINT = 'cat'
+    
 	#CHECKING WHETHER DEDMAP IS INSTALLED OR NOT
-	INSTALLED = path.exists('/usr/share/dedmap/') or path.exists('/data/data/com.termux/files/usr/share/dedmap/')
+	INSTALLED = platform == 'win32' or path.exists('/usr/share/dedmap/') or path.exists('/data/data/com.termux/files/usr/share/dedmap/')
+	print()
 	
 	#GRAPHICS/TEXT ART
-	if INSTALLED: call('echo && pyfiglet -c RED dedmap -f Bloody', shell = True)
-	else: call('echo && figlet -f fonts/Bloody.flf dedmap', shell = True)
+	if INSTALLED: call('pyfiglet -c RED dedmap -f Bloody', shell = True)
+	else: call('figlet -f fonts/Bloody.flf dedmap', shell = True)
 
 	#INITIAL MESSAGE
 	log.info(f'\n{BLUE}Starting DEDMAP at {datetime.now().strftime("%B %d, %Y %H:%M:%S")} ( https://7Ragnarok7.github.io/DEDMAP ) .....{RESET}')
@@ -39,8 +44,9 @@ try:
 	def out():
 		if "--out" in options: 
 			print(f'\n{GREEN}Writing the output to {options["--out"]}{RESET}\n')
-			call(f'cat temp.log >> {options["--out"]}.dedmap && rm temp.log', shell = True)
-		else: call("rm temp.log", shell = True)
+			call(f'{PRINT} temp.log >> {options["--out"]}.dedmap', shell = True)
+		try: remove('temp.log')
+		except: print(f'\n{RED}Can\'t remove the temp.log file. Remove it manually before next use.{RESET}')
 
 	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
 	def help(): print(GREEN + """
