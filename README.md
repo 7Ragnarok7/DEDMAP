@@ -17,11 +17,13 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 
 **DEDMAP** can also scan a range of hosts to find live hosts.
 
-### Checkout the Video Walkthrough here --> [https://youtu.be/e1V83h4R5sI](https://youtu.be/e1V83h4R5sI)
+### Read the Official Whitepaper [HERE](docs/dedmap_whitepaper.docx)
 
-### [CODE OF CONDUCT](https://github.com/7Ragnarok7/DEDMAP/blob/master/CODE_OF_CONDUCT.md)
+### Checkout the Official Video Walkthrough here --> [https://youtu.be/e1V83h4R5sI](https://youtu.be/e1V83h4R5sI)
 
-### [CONTRIBUTING](https://github.com/7Ragnarok7/DEDMAP/blob/master/CONTRIBUTING.md)
+### [CODE OF CONDUCT](CODE_OF_CONDUCT.md)
+
+### [CONTRIBUTING](CONTRIBUTING.md)
 
 ### Requirements :- 
  - [Termux][tm] (if installing on an android device)
@@ -203,7 +205,7 @@ $ dedmap -o report 127.0.0.1
 
 ### Reporting :-
  - Report BUGS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
- - Reporting guide/template [can be found here.](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
+ - Reporting guide/template [can be found here.](.github/ISSUE_TEMPLATE)  
  
 ### Feedback :-
  - Share your feedback and discuss about the project at [(https://github.com/7Ragnarok7/DEDMAP/discussions)](https://github.com/7Ragnarok7/DEDMAP/discussions)
