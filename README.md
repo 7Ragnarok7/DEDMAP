@@ -205,7 +205,7 @@ $ dedmap -o report 127.0.0.1
 
 ### Reporting :-
  - Report BUGS at [( https://github.com/7Ragnarok7/DEDMAP/issues )](https://github.com/7Ragnarok7/DEDMAP/issues)
- - Reporting guide/template [can be found here.](.github/ISSUE_TEMPLATE)  
+ - Reporting guide/template [can be found here.](https://github.com/7Ragnarok7/DEDMAP/tree/master/.github/ISSUE_TEMPLATE)  
  
 ### Feedback :-
  - Share your feedback and discuss about the project at [(https://github.com/7Ragnarok7/DEDMAP/discussions)](https://github.com/7Ragnarok7/DEDMAP/discussions)
