@@ -14,10 +14,10 @@ import socket, getopt, logging as log
 try:
 	#SETTING UP A COLOR SCHEME FOR BETTER VISUALISATION
 	init()
-	BLUE = Fore.BLUE   			#FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
-	RED = Fore.RED	   			#FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
-	GREEN = Fore.GREEN 			#FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERY AND HELP MENU
-	RESET = Fore.RESET			#FOR RESETTING TO DEFAULT SHELL COLOR
+	BLUE = Fore.BLUE   		#FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
+	RED = Fore.RED	   		#FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
+	GREEN = Fore.GREEN 		#FOR MARKING A SUCCESSFUL HOST/PORT DISCOVERY AND HELP MENU
+	RESET = Fore.RESET		#FOR RESETTING TO DEFAULT SHELL COLOR
 	GRAY = Fore.LIGHTBLACK_EX	#FOR MARKING AN UNSUCCESSFUL HOST/PORT DISCOVERY IN VERBOSE MODE
 	YELLOW = Fore.YELLOW		#FOR MARKING DEBUGGING STATEMENTS
 	
@@ -132,7 +132,7 @@ Examples:               dedmap 1.1.1.1
 		global port_count
 		if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		else: sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		sock.settimeout(0.1)
+		sock.settimeout(0.2)
 		result = sock.connect_ex((ip, p))
 		
 		if not result:
@@ -178,7 +178,7 @@ Examples:               dedmap 1.1.1.1
 			for ip in targets.values():
 				if "--verbose" in options: print(f"{RED}Scanning {SWAP_TARGETS[ip]} .....{RESET}")
 				if "--mode" not in options or options["--mode"] == "wan": response = popen(f"ping -b -c 1 -W 1 {ip}")
-				elif options["--mode"] == "lan": response = popen(f"ping -b -c 1 -W 0.1 {ip}")
+				elif options["--mode"] == "lan": response = popen(f"ping -b -c 1 -W 0.2 {ip}")
 				else: exit(f"\n{RED}Invalid network scan mode specified!{RESET}\n")
 				if "ttl" in response.readlines()[1].lower():
 					log.info(f"{GREEN}{ip} --> Live{RESET}")
