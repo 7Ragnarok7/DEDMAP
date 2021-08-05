@@ -12,7 +12,7 @@ from subprocess import call
 import socket, getopt, logging as log
 
 try:
-	#SETTING UP A COLOR SCHEME FOR BETTER VISUALISATION
+	#SETTING UP A COLOR SCHEME FOR BETTER VISUALIZATION
 	init()
 	BLUE = Fore.BLUE   		#FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
 	RED = Fore.RED	   		#FOR MARKING STARTING/ENDING OF AN EVENT OR AN ERROR
@@ -25,28 +25,35 @@ try:
 	log.basicConfig(level = log.INFO, format = '  %(message)s', handlers = [log.FileHandler('temp.log'), log.StreamHandler()])
 	
 	#SETTING UP OS-SPECIFIC COMMANDS
-	if platform == 'win32': PRINT = 'type'
-	else: PRINT = 'cat'
+	if platform == 'win32': 
+		PRINT = 'type'
+	else: 
+		PRINT = 'cat'
     
 	#CHECKING WHETHER DEDMAP IS INSTALLED OR NOT
 	INSTALLED = platform == 'win32' or path.exists('/usr/share/dedmap/') or path.exists('/data/data/com.termux/files/usr/share/dedmap/')
 	print()
 	
 	#GRAPHICS/TEXT ART
-	if INSTALLED: call('pyfiglet -c RED dedmap -f Bloody', shell = True)
-	else: call('figlet -f fonts/Bloody.flf dedmap', shell = True)
+	if INSTALLED: 
+		call('pyfiglet -c RED dedmap -f Bloody', shell = True)
+	else: 
+		call('figlet -f fonts/Bloody.flf dedmap', shell = True)
 
 	#INITIAL MESSAGE
 	log.info(f'\n{BLUE}Starting DEDMAP at {datetime.now().strftime("%B %d, %Y %H:%M:%S")} ( https://7Ragnarok7.github.io/DEDMAP ) .....{RESET}')
-	with open("temp.log", "a") as file: file.write(f'\nCommand used: {" ".join(argv)}\n')
+	with open("temp.log", "a") as file: 
+		file.write(f'\nCommand used: {" ".join(argv)}\n')
 	
 	#FUNCTION TO SAVE THE OUTPUT TO A FILE
 	def out():
 		if "--out" in options: 
 			print(f'\n{GREEN}Writing the output to {options["--out"]}{RESET}\n')
 			call(f'{PRINT} temp.log >> {options["--out"]}.dedmap', shell = True)
-		try: remove('temp.log')
-		except: print(f'\n{RED}Can\'t remove the temp.log file. Remove it manually before next use.{RESET}')
+		try: 
+			remove('temp.log')
+		except: 
+			print(f'\n{RED}Can\'t remove the temp.log file. Remove it manually before next use.{RESET}')
 
 	#DEFINED A HELP FUNCTION TO OUTPUT USAGE INSTRUCTIONS
 	def help(): print(GREEN + """
@@ -114,8 +121,10 @@ Examples:               dedmap 1.1.1.1
 	#DESIGNED A FUNTION TO GIVE PRIORITY TO LONG-FORMAT ARGUMENTS
 	def priority():
 		for item in POSSIBLE_OPTIONS:
-			if item in options and POSSIBLE_OPTIONS[item] in options: del(options[item])
-			elif item in options: options[POSSIBLE_OPTIONS[item]] = options.pop(item)
+			if item in options and POSSIBLE_OPTIONS[item] in options: 
+				del(options[item])
+			elif item in options: 
+				options[POSSIBLE_OPTIONS[item]] = options.pop(item)
 		
 	
 	#DESIGNED AN ALGORITHM TO CONVERT IP-RANGE TO A LIST OF IP'S
@@ -123,22 +132,26 @@ Examples:               dedmap 1.1.1.1
 		new_targets = []
 		octets = seperated[0].split(".")
 		new = [i for i in range(int(octets[3]), int(seperated[1]) + 1)]
-		for i in new: new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
+		for i in new: 
+			new_targets.append(".".join([octets[0], octets[1], octets[2], str(i)]))	 
 		targets[index] = new_targets
 		
 	
 	#TCP/UDP SCANNER
 	def scanner(ip, p, mode):
 		global port_count
-		if mode == "tcp": sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		else: sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		if mode == "tcp": 
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		else: 
+			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		sock.settimeout(0.2)
 		result = sock.connect_ex((ip, p))
 		
 		if not result:
 			port_count += 1
 			log.info(f"{GREEN}  PORT {p} ({TOP_100_PORTS[p] if p in TOP_100_PORTS else 'unknown'}) -->   OPEN   {RESET}")
-		elif result and ("--verbose" in options or "--port" in options): print(f"{GRAY}  PORT {p} ({TOP_100_PORTS[p] if p in TOP_100_PORTS else 'unknown'})  -->   CLOSED   {RESET}")
+		elif result and ("--verbose" in options or "--port" in options): 
+			print(f"{GRAY}  PORT {p} ({TOP_100_PORTS[p] if p in TOP_100_PORTS else 'unknown'})  -->   CLOSED   {RESET}")
 		sock.close()	
 	
 	#TCP/UDP SCAN SELECTOR ***************
@@ -157,29 +170,36 @@ Examples:               dedmap 1.1.1.1
 			log.info(f"\n{RED}---------------- Scanning {SWAP_TARGETS[ip]} ({ip}) ---------------{RESET}\n")
 			port_count = 0
 		
-			if len(ports): port_range = ports
+			if len(ports): 
+				port_range = ports
 				
 			for p in port_range:
 				if mode == "tcp" or mode == "udp": scanner(ip, p, mode)
 				else:
 					out()
 					exit(f"\n{RED}Invalid scan option specified!{RESET}\n")
-			if port_count: log.info(f"\n{GREEN}Found {port_count} out of {len(port_range)} ports open for the host: {SWAP_TARGETS[ip]}{RESET}\n")
+			if port_count: 
+				log.info(f"\n{GREEN}Found {port_count} out of {len(port_range)} ports open for the host: {SWAP_TARGETS[ip]}{RESET}\n")
 	
 	#MAIN SCAN CALLING FUNCTION ********
 	def scan():
 		
 		#DNS LOOKUP
-		if "--dns" in options: log.info(f"\n{RED}Performing a DNS lookup.....{RESET}\n\n{GREEN}{targets}{RESET}\n")
+		if "--dns" in options: 
+			log.info(f"\n{RED}Performing a DNS lookup.....{RESET}\n\n{GREEN}{targets}{RESET}\n")
 		
 		#NETWORK SCAN
 		if "--net" in options:
 			log.info(f"\n{RED}Performing a network scan.....{RESET}\n")
 			for ip in targets.values():
-				if "--verbose" in options: print(f"{RED}Scanning {SWAP_TARGETS[ip]} .....{RESET}")
-				if "--mode" not in options or options["--mode"] == "wan": response = popen(f"ping -b -c 1 -W 1 {ip}")
-				elif options["--mode"] == "lan": response = popen(f"ping -b -c 1 -W 0.2 {ip}")
-				else: exit(f"\n{RED}Invalid network scan mode specified!{RESET}\n")
+				if "--verbose" in options: 
+					print(f"{RED}Scanning {SWAP_TARGETS[ip]} .....{RESET}")
+				if "--mode" not in options or options["--mode"] == "wan": 
+					response = popen(f"ping -b -c 1 -W 1 {ip}")
+				elif options["--mode"] == "lan": 
+					response = popen(f"ping -b -c 1 -W 0.2 {ip}")
+				else: 
+					exit(f"\n{RED}Invalid network scan mode specified!{RESET}\n")
 				if "ttl" in response.readlines()[1].lower():
 					log.info(f"{GREEN}{ip} --> Live{RESET}")
 					live_targets.append(ip) #STORING ALL THE LIVE TARGETS
@@ -189,33 +209,53 @@ Examples:               dedmap 1.1.1.1
 		#REVERSE-DNS LOOKUP
 		if "--rdns" in options:
 			log.info(f"\n{RED}Performing a REVERSE-DNS lookup.....{RESET}\n")
-			if "--net" in options: hostnames = list(map(socket.gethostbyaddr, live_targets))
-			else: hostnames = list(map(socket.gethostbyaddr, targets.values()))
+			if "--net" in options: 
+				hostnames = list(map(socket.gethostbyaddr, live_targets))
+			else: 
+				hostnames = list(map(socket.gethostbyaddr, targets.values()))
 			log.info(array(list(zip(hostnames, live_targets))))
 			
 		
 		#TCP/UDP SCAN
 		if "--tcp" in options or OPTION_LEN == 0: #MUST SPECIFY -t OPTION IN ANY OTHER OPTION IS GIVEN (EVEN -v)
 			if "--port" not in options or options["--port"] == "top100": tcp_udp("tcp", TOP_100_PORTS.keys())
-			elif options["--port"] == "top10": tcp_udp("tcp", TOP_10_PORTS)
-			elif options["--port"] == "top1000": tcp_udp("tcp", TOP_1000_PORTS)
-			elif options["--port"] == "system": tcp_udp("tcp", range(0, 1024))
-			elif options["--port"] == "user": tcp_udp("tcp", range(1024, 49152))
-			elif options["--port"] == "private": tcp_udp("tcp", range(49152, 65536))
-			elif options["--port"] == "all": tcp_udp("tcp", range(0, 65536))
-			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): tcp_udp("tcp")
-			else: print(f"{RED}\nInvalid port option specified!{RESET}\n")
+			elif options["--port"] == "top10": 
+				tcp_udp("tcp", TOP_10_PORTS)
+			elif options["--port"] == "top1000": 
+				tcp_udp("tcp", TOP_1000_PORTS)
+			elif options["--port"] == "system": 
+
+				tcp_udp("tcp", range(0, 1024))
+			elif options["--port"] == "user": 
+				tcp_udp("tcp", range(1024, 49152))
+			elif options["--port"] == "private": 
+				tcp_udp("tcp", range(49152, 65536))
+			elif options["--port"] == "all": 
+				tcp_udp("tcp", range(0, 65536))
+			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): 
+				tcp_udp("tcp")
+			else: 
+				print(f"{RED}\nInvalid port option specified!{RESET}\n")
 			
 		if "--udp" in options:
-			if "--port" not in options or options["--port"] == "top100": tcp_udp("udp", TOP_100_PORTS.keys())
-			elif options["--port"] == "top10": tcp_udp("udp", TOP_10_PORTS)
-			elif options["--port"] == "top1000": tcp_udp("udp", TOP_1000_PORTS)
-			elif options["--port"] == "system": tcp_udp("udp", range(0, 1024))
-			elif options["--port"] == "user": tcp_udp("udp", range(1024, 49152))
-			elif options["--port"] == "private": tcp_udp("udp", range(49152, 65536))
-			elif options["--port"] == "all": tcp_udp("udp", range(0, 65536))
-			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): tcp_udp("udp")
-			else: print(f"\n{RED}Invalid port option specified!{RESET}\n")
+			if "--port" not in options or options["--port"] == "top100": 
+				tcp_udp("udp", TOP_100_PORTS.keys())
+			elif options["--port"] == "top10": 
+				tcp_udp("udp", TOP_10_PORTS)
+			elif options["--port"] == "top1000": 
+				tcp_udp("udp", TOP_1000_PORTS)
+			elif options["--port"] == "system": 
+				tcp_udp("udp", range(0, 1024))
+			elif options["--port"] == "user": 
+				tcp_udp("udp", range(1024, 49152))
+			elif options["--port"] == "private": 
+				tcp_udp("udp", range(49152, 65536))
+			elif options["--port"] == "all": 
+				tcp_udp("udp", range(0, 65536))
+			elif len(ports) and "".join([str(i) for i in ports]).isdigit(): 
+				tcp_udp("udp")
+			else: 
+				print(f"\n{RED}Invalid port option specified!{RESET}\n")
 			
 		
 	#GETTING HOSTNAMES, IPs AND SCANNING PARAMETERS FORM SHELL ARGUMENTS
@@ -226,7 +266,8 @@ Examples:               dedmap 1.1.1.1
 	for item in targets:
 		if "-" in item:
 			new = item.split("-")
-			if "".join(new[0].split(".")).isdigit(): convert(new, targets.index(item))
+			if "".join(new[0].split(".")).isdigit(): 
+				convert(new, targets.index(item))
 
 	
 	#VARIABLES
@@ -264,8 +305,10 @@ Examples:               dedmap 1.1.1.1
 	
 	#GETTING SPECIFIC PORTS
 	if "--port" in options: 
-		if "," in options["--port"] : ports = options["--port"].split(",")
-		elif options["--port"].isdigit(): ports.append(options["--port"])
+		if "," in options["--port"] :
+			ports = options["--port"].split(",")
+		elif options["--port"].isdigit(): 
+			ports.append(options["--port"])
 	ports = [int(i) for i in ports]
 
 	
@@ -289,14 +332,20 @@ Examples:               dedmap 1.1.1.1
 
 
 #EXCEPTION HANDLING
-except IndexError: exit(f"\n{RED}IP-RANGE only supported in last octet .i.e 1.1.1.1-100{RESET}\n")
-except socket.gaierror: print(f"\n{RED}Unable to resolve hostname!{RESET}\n")
-except socket.error: print(f"\n{RED}Couldn't connect to the server!{RESET}\n")
+except IndexError: 
+	exit(f"\n{RED}IP-RANGE only supported in last octet .i.e 1.1.1.1-100{RESET}\n")
+except socket.gaierror: 
+	print(f"\n{RED}Unable to resolve hostname!{RESET}\n")
+except socket.error: 
+	print(f"\n{RED}Couldn't connect to the server!{RESET}\n")
 except KeyboardInterrupt:
 	log.info(f"\n{RED}Quitting... Ctrl+C was pressed{RESET}\n")
 	exit(out())
 except getopt.GetoptError:
-	if argv[1] == "-p" or argv[1] == "--port": exit(f"\n{RED}Option -p requires an argument{RESET}\n")
-	elif argv[1] == "-o" or argv[1] == "--out": exit(f"\n{RED}Option -o requires an argument{RESET}\n")
-	else: exit(f"\n{RED}Argument Value Missing/Option Not Valid!{RESET}\n")
+	if argv[1] == "-p" or argv[1] == "--port": 
+		exit(f"\n{RED}Option -p requires an argument{RESET}\n")
+	elif argv[1] == "-o" or argv[1] == "--out": 
+		exit(f"\n{RED}Option -o requires an argument{RESET}\n")
+	else: 
+		exit(f"\n{RED}Argument Value Missing/Option Not Valid!{RESET}\n")
 else: out()
