@@ -1,8 +1,5 @@
-[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/7Ragnarok7/DEDMAP)
-
-[![DEDMAP-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/Screenshot%20from%202020-07-24%2021-45-44.png?raw=true)][page]
-# *DEDMAP*
-[![Python-ico](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/python-logo.png?raw=true)][py]  
+# *DEDMAP* [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/7Ragnarok7/DEDMAP)
+[![Dedmap-icon](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/dedmap.jpg?raw=true)][page]  
 
 ##### DEDMAP is a ***Simple*** but ***Powerful***, ***Clever*** and ***Flexible*** Cross-Platform [Port Scanning][ps] tool made with ease to use and convenience in mind. 
 
@@ -182,6 +179,8 @@ $ dedmap -o report 127.0.0.1
  - This tool is made for educational purpose only. Use it with/on systems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
 ### Limitations as of now / Known Issues :-
+ - DEDMAP IS AN INDEPENDENT TOOL MADE FOR ONLY PORT-SCANNING AS IT'S MAIN GOAL. HENCE IT WILL NEVER SUPPORT FEATURES LIKE SERVICE/VERSION SCAN AS THEY DEPEND UPON NETCAT.
+ 
  - GENERATING A REPORT DOES NOT WORK PROPERLY IN WINDOWS.
  
  - IS SLOW AS NO MULTI-THREADING CONCEPTS USED IN THE PROGRAM.
@@ -195,7 +194,7 @@ $ dedmap -o report 127.0.0.1
 ### To Do :-
  - ~~[ ] FIX UDP SCANNING~~
  
- - [x] ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVEN BASED VISUAL RESPONSES.
+ - [x] ADD COLORS TO THE REST OF THE OUTPUT TO PROVIDE EVENT-BASED VISUAL RESPONSES.
  
  - [x] TEST AND ADD SUPPORT FOR TERMUX
  
