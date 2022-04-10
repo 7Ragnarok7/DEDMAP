@@ -32,16 +32,18 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
  - *A bit of love and care* :)
 
 ### Installation :-
- - Download the latest release from [HERE](https://github.com/7Ragnarok7/DEDMAP/releases)
+ - Download the latest release from [RELEASES][RELEASES]
  
  - Extract the archive
- 
- - Follow the Below steps using ***termux-install.sh*** if installing for termux
+
+ - Follow the steps below
 ```sh
 $ cd DEDMAP
 $ chmod +x install.sh
 $ ./install.sh
 ```
+ - Follow the above steps using ***termux-install.sh*** if installing for termux
+
 All the additional requirements will be installed automatically.
 Just execute the "install.sh" file ;)
 
@@ -56,13 +58,14 @@ Update the tool by downloading the latest release and re-installing it again.
 - Subsequent to the above step, Lauch the tool using `dedmap` or `python dedmap` command from a command-prompt inside the dedmap root directory.
 
 ### Uninstallation :-
-
- - Follow the Below steps using ***termux-uninstall.sh*** if uninstalling for termux
+- Follow the steps below
 ```sh
 $ cd DEDMAP
 $ chmod +x uninstall.sh
 $ ./uninstall.sh
 ```
+ - Follow the above steps using ***termux-uninstall.sh*** if uninstalling for termux
+
 ### Highlights :-
  - Packed with lots of additional features all in one place.
  
@@ -88,7 +91,7 @@ $ ./uninstall.sh
 
  - Supports various port specification options
 
- - Is colourful. Provides coloured event-based visual responses.
+ - Is colorful. Provides colored event-based visual responses
 
 ### LEGEND/Color schemes :-
  - BLUE	  -->  FOR MARKING THE SUCCESSFUL STARTING AND COMPLETION OF THE PROGRAM
@@ -216,3 +219,4 @@ $ dedmap -o report 127.0.0.1
 [pp]:<https://pip.pypa.io/en/stable/installing>
 [page]:<https://7ragnarok7.github.io/DEDMAP>
 [tm]:<https://play.google.com/store/apps/details?id=com.termux>
+[RELEASES]:<https://github.com/7Ragnarok7/DEDMAP/releases>
