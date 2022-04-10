@@ -23,14 +23,14 @@ Both TCP and UDP protocols have 0 to 65535 ports. These 65535 ports can be divid
 ### [CONTRIBUTING](CONTRIBUTING.md)
 
 ### Requirements :- 
- - [Termux][tm] (if installing on an android device)
-  
  - [Python 3][py]
 
  - [Pip][pp]
 
+ - [Termux][tm] (if installing on an android device)
+
  - *A bit of love and care* :)
- 
+
 ### Installation :-
  - Download the latest release from [HERE](https://github.com/7Ragnarok7/DEDMAP/releases)
  
