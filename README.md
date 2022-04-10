@@ -179,7 +179,7 @@ $ dedmap -o report 127.0.0.1
  - This tool has not been tested in Windows yet and will not work most probably. Feel free to experiment.
 
 ### Disclaimer :-
- - This tool is made for educational purpose only. Use it with/on systems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
+ - This tool is made for educational & research purpose only. Use it with/on systems or networks you own or have permission from the owner. I shall not be held responsible for whatsoever you do with this tool.
 
 ### Limitations as of now / Known Issues :-
  - DEDMAP IS AN INDEPENDENT TOOL MADE FOR ONLY PORT-SCANNING AS IT'S MAIN GOAL. HENCE IT WILL NEVER SUPPORT FEATURES LIKE SERVICE/VERSION SCAN AS THEY DEPEND UPON NETCAT.
