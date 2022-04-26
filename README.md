@@ -1,4 +1,4 @@
-# *DEDMAP* [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/7Ragnarok7/DEDMAP)
+# *DEDMAP* [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/7Ragnarok7/DEDMAP) [![Featured on Openbase](https://badges.openbase.com/python/featured/dedmap.svg?token=m3YHZqfzOHQMq5xr0CDwE4OmXkLH3HTLBb8OUphl8Cc=)](https://openbase.com/python/dedmap?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge)
 [![Dedmap-icon](https://github.com/7Ragnarok7/DEDMAP/blob/master/image-src/dedmap.jpg?raw=true)][page]  
 
 ##### DEDMAP is a ***Simple*** but ***Powerful***, ***Clever*** and ***Flexible*** Cross-Platform [Port Scanning][ps] tool made with ease to use and convenience in mind. 
