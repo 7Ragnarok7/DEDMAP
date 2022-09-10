@@ -1,4 +1,4 @@
-[![DEDMAP-icon](image-src/dedmap.png)][page]  
+[![DEDMAP-icon](image-src/dedmap.jpg)][page]  
 
 # *DEDMAP* 
 ### Network Automation for Hackers
