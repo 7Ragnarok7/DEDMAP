@@ -7,7 +7,7 @@
 
 ![dedmap demo](image-src/dedmap.gif)
 
-### World's first one of it's kind Network Automation as a Service (NaaaS).
+### One of it's kind Network Automation as a Service (NaaaS).
 
 ##### DEDMAP is a ***Simple*** but ***Powerful***, ***Clever*** and ***Flexible*** Cross-Platform [Port Scanning][ps] tool made with ease to use and convenience in mind.
 
