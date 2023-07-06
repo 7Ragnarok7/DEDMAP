@@ -7,7 +7,7 @@
 
 ![dedmap demo](image-src/dedmap.gif)
 
-### One of it's kind Network Automation as a Service (NaaaS).
+### One of its kind Network Automation as a Service (NaaaS).
 
 ##### DEDMAP is a ***Simple*** but ***Powerful***, ***Clever*** and ***Flexible*** Cross-Platform [Port Scanning][ps] tool made with ease to use and convenience in mind.
 
@@ -61,7 +61,7 @@ Update the tool by downloading the latest release and re-installing it again.
 ### Using the tool in Windows :-
 
 - Initially, Double-Click or launch the ***dedmap.bat*** once from a command-prompt for installing the requirements.
-- Subsequent to the above step, Lauch the tool using `dedmap` or `python dedmap` command from a command-prompt inside the dedmap root directory.
+- Subsequent to the above step, launch the tool using `dedmap` or `python dedmap` command from a command-prompt inside the dedmap root directory.
 
 ### Uninstallation :-
 - Follow the steps below
